@@ -1,0 +1,19 @@
+<div class="col-lg-3 col-sm-6">
+    <div class="single_category_product">
+        <div class="single_category_img">
+            <a href="<%= ('/category/' + product.no) %>">    
+                <img src="<%= product.image%>" height="259" width="500" alt="">
+            </a>
+            <div class="category_social_icon">
+                <ul>
+                    <li><a href="#"><i class="ti-heart"></i></a></li>
+                    <li><a href="#"><i class="ti-bag"></i></a></li>
+                </ul>
+            </div>
+            <div class="category_product_text">
+                <a href="/category/product02"> <h5><%= product.name%></h5></a>
+                <p><%= product.price%></p>
+            </div>
+        </div>
+    </div>
+</div>

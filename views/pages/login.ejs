@@ -1,0 +1,64 @@
+<head>
+    <% include ../header.ejs %>
+</head>
+
+<body class="bg-white">
+
+    <% include ../main-menu.ejs %>
+    <!--================Home Banner Area =================-->
+    <% include ../breadcrumb.ejs %>
+
+    <!--================login_part Area =================-->
+    <section class="login_part section_padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_text text-center">
+                        <div class="login_part_text_iner">
+                            <h2>Lần đầu tiên đến shop?</h2>
+                            <p>Có rất nhiều tiện ích và ưu đãi khi đăng kí làm thành viên của Winter Shop.</p>
+                            <a href="#" class="btn_3">Tạo tài khoản ngay bây giờ ?</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_form">
+                        <div class="login_part_form_iner">
+                            <h3>Chào mừng bạn quay trở lại! <br>
+                                Đăng nhập ngay bây giờ</h3>
+                            <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                                <div class="col-md-12 form-group p_star">
+                                    <input type="text" class="form-control" id="name" name="name" value=""
+                                        placeholder="Tên tài khoản">
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <input type="password" class="form-control" id="password" name="password" value=""
+                                        placeholder="Mật khẩu">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <div class="creat_account d-flex align-items-center">
+                                        <input type="checkbox" id="f-option" name="selector">
+                                        <label for="f-option">Ghi nhớ</label>
+                                    </div>
+                                    <button type="submit" value="submit" class="btn_3"
+                                        onclick="return returnHomePage()">
+                                        Đăng nhập
+                                    </button>
+
+                                    <a class="lost_pass" href="/">Quên mật khẩu</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================login_part end =================-->
+
+    <% include ../footer.ejs %>
+
+    <% include ../script.ejs %>
+</body>
+
+</html>

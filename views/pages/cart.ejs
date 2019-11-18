@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <% include ../header.ejs %>
+</head>
+
+<body class="bg-white">
+    <% include ../main-menu.ejs %>
+
+    <% include ../breadcrumb.ejs %>
+
+  <!--================Cart Area =================-->
+  <section class="cart_area section_padding">
+    <div class="container">
+      <div class="cart_inner">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Tổng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="media">
+                    <div class="d-flex">
+                      <img src="img/arrivel/arrivel_1.png" alt="" />
+                    </div>
+                    <div class="media-body">
+                      <p>Minimalistic shop for multipurpose use</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <h5>$360.00</h5>
+                </td>
+                <td>
+                  <div class="product_count">
+                    <!-- <input type="text" value="1" min="0" max="10" title="Quantity:"
+                      class="input-text qty input-number" />
+                    <button
+                      class="increase input-number-increment items-count" type="button">
+                      <i class="ti-angle-up"></i>
+                    </button>
+                    <button
+                      class="reduced input-number-decrement items-count" type="button">
+                      <i class="ti-angle-down"></i>
+                    </button> -->
+                    <span class="input-number-decrement"> <i class="ti-minus"></i></span>
+                    <input class="input-number" type="text" value="1" min="0" max="10">
+                    <span class="input-number-increment"> <i class="ti-plus"></i></span>
+                  </div>
+                </td>
+                <td>
+                  <h5>$720.00</h5>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="media">
+                    <div class="d-flex">
+                      <img src="img/arrivel/arrivel_2.png" alt="" />
+                    </div>
+                    <div class="media-body">
+                      <p>Minimalistic shop for multipurpose use</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <h5>$360.00</h5>
+                </td>
+                <td>
+                  <div class="product_count">
+                      <span class="input-number-decrement"> <i class="ti-minus"></i></span>
+                      <input class="input-number" type="text" value="1" min="0" max="10">
+                      <span class="input-number-increment"> <i class="ti-plus"></i></span>
+                  </div>
+                </td>
+                <td>
+                  <h5>$720.00</h5>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>
+                  <h5>Tổng</h5>
+                </td>
+                <td>
+                  <h5>$2160.00</h5>
+                </td>
+              </tr>
+              <tr class="shipping_area">
+                <td></td>
+                <td></td>
+                <td>
+                  <h5>Phí vận chuyển</h5>
+                </td>
+                <td>
+                  <div class="shipping_box">
+                    <ul class="list">
+                      <li>
+                        Vận chuyển nhanh: $5.00
+                        <input type="radio" aria-label="Radio button for following text input">
+                      </li>
+                      <li>
+                        Vận chuyển thường: $0.00
+                        <input type="radio" aria-label="Radio button for following text input">
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="checkout_btn_inner float-right">
+            <a class="btn_1" href="/category">Trở lại cửa hàng</a>
+            <a class="btn_1 checkout_btn_1" href="/checkout">Thanh toán</a>
+          </div>
+        </div>
+      </div>
+  </section>
+  <!--================End Cart Area =================-->
+
+  <% include ../footer.ejs %>
+  
+  <% include ../script.ejs %>
+</body>
+
+</html>
