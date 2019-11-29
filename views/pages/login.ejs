@@ -17,7 +17,7 @@
                         <div class="login_part_text_iner">
                             <h2>Lần đầu tiên đến shop?</h2>
                             <p>Có rất nhiều tiện ích và ưu đãi khi đăng kí làm thành viên của Winter Shop.</p>
-                            <a href="#" class="btn_3">Tạo tài khoản ngay bây giờ ?</a>
+                            <a href="/register" class="btn_3">Tạo tài khoản ngay bây giờ ?</a>
                         </div>
                     </div>
                 </div>
@@ -26,9 +26,9 @@
                         <div class="login_part_form_iner">
                             <h3>Chào mừng bạn quay trở lại! <br>
                                 Đăng nhập ngay bây giờ</h3>
-                            <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                            <form class="row contact_form"  method="post" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="name" name="name" value=""
+                                    <input type="text" class="form-control" id="name" name="username" value=""
                                         placeholder="Tên tài khoản">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
@@ -40,8 +40,7 @@
                                         <input type="checkbox" id="f-option" name="selector">
                                         <label for="f-option">Ghi nhớ</label>
                                     </div>
-                                    <button type="submit" value="submit" class="btn_3"
-                                        onclick="return returnHomePage()">
+                                    <button type="submit" value="submit" class="btn_3">
                                         Đăng nhập
                                     </button>
 
@@ -55,6 +54,8 @@
         </div>
     </section>
     <!--================login_part end =================-->
+
+
 
     <% include ../footer.ejs %>
 

@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <% include ../main-menu.ejs %>
+    <%- include('../main-menu.ejs', {isAuthenticated: isAuthenticated, username: username}) %>
     <!-- Header part end-->
 
     <!-- banner part start-->
@@ -224,6 +224,12 @@
 
     <% include ../footer.ejs %>
     <% include ../script.ejs %>
+
+    <% if (isRegisted) { %>
+		<script>
+			alert("Cảm ơn bạn đã đăng ký tài khoản!");
+		</script>
+	<% } %>
 
 </body>
 

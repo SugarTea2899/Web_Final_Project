@@ -7,20 +7,66 @@ module.exports = {
             const brand = req.query.brand;
             if (type === undefined && brand === undefined) {
                 const docs = await product.find();
-                res.render('pages/category', { products: docs });
+                if (req.isAuthenticated())
+                {
+                    res.render('pages/category',{
+                        products: docs,
+                        isAuthenticated: true,
+                        username: req.user.fullName,
+                    } );
+                }
+                else
+                {
+                    res.render('pages/category', {
+                        products: docs,
+                        isAuthenticated: false,
+                        username: null,
+                    });
+                }
             } else {
                 if (type !== undefined) {
                     const docs = await product.find({ type: type });
-                    res.render('pages/category', { products: docs });
+                    if (req.isAuthenticated())
+                    {
+                        res.render('pages/category',{
+                            products: docs,
+                            isAuthenticated: true,
+                            username: req.user.fullName,
+                        } );
+                    }
+                    else
+                    {
+                        res.render('pages/category', {
+                            products: docs,
+                            isAuthenticated: false,
+                            username: null,
+                        });
+                    }
                 } else {
                     if (brand !== undefined) {
                         const docs = await product.find({ brand: brand });
                         res.render('pages/category', { products: docs });
+                        if (req.isAuthenticated())
+                        {
+                            res.render('pages/category',{
+                                products: docs,
+                                isAuthenticated: true,
+                                username: req.user.fullName,
+                            } );
+                        }
+                        else
+                        {
+                            res.render('pages/category', {
+                                products: docs,
+                                isAuthenticated: false,
+                                username: null,
+                            });
+                        }
                     }
                 }
             }
         } catch (e) {
-            console.log(e);
+            next(e);
         }
     }
 };
