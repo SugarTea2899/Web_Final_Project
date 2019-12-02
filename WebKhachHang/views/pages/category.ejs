@@ -1,0 +1,176 @@
+<% breadcrumbValue = 'Trang chủ / Cửa hàng'%>
+<head>
+    <% include ../header.ejs %>
+</head>
+
+<body class="bg-white">
+    
+    <% include ../main-menu.ejs %>
+    
+
+    <!--================Home Banner Area =================-->
+    <!-- breadcrumb start-->
+
+    <% include ../breadcrumb.ejs %>
+    
+    <!-- breadcrumb start-->
+
+    <!--================Category Product Area =================-->
+    <section class="cat_product_area section_padding border_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="left_sidebar_area">
+                        <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
+                            <div class="l_w_title">
+                                <h3>Các loại sản phẩm</h3>
+                            </div>
+                            <div class="widgets_inner">
+                                <ul class="list">
+                                    <li class="sub-menu">
+                                        <a class=" d-flex justify-content-between">
+                                            Áo
+                                            <div class="right ti-plus"></div>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="category?type=áo len">Áo len</a>
+                                            </li>
+                                            <li>
+                                                <a href="category?type=áo hoodie">Áo hoodie</a>
+                                            </li>
+                                            <li>
+                                                <a href="category?type=áo khoác">Áo khoác</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="sub-menu">
+                                        <a class=" d-flex justify-content-between">
+                                            Quần
+                                            <div class="right ti-plus"></div>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="category?type=quần tây">Quần tây</a>
+                                            </li>
+                                            <li>
+                                                <a href="category?type=quần jean">Quần jean</a>
+                                            </li>
+                                            <li>
+                                                <a href="category?type=quần kaki">Quần kaki</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="category?type=giày">Giày các loại</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+
+                        <aside class="left_widgets p_filter_widgets sidebar_box_shadow">
+                            <div class="l_w_title">
+                                <h3>Lọc Sản Phẩm</h3>
+                            </div>
+                            <div class="widgets_inner">
+                                <ul class="list">
+                                    <h5 style="font-weight: bold">Thương hiệu</h5>
+                                    
+                                    <li>
+                                        <a href="category?brand=Winter">&nbsp&nbspWinter</a>
+                                    </li>
+                                    <li>
+                                        <a href="category?brand=Wephobia">&nbsp&nbspWephobia</a>
+                                    </li>
+                                    <li class="active">
+                                        <a href="category?brand=Magonn">&nbsp&nbspMagonn</a>
+                                    </li>
+                                    <li>
+                                        <a href="category?brand=Libe">&nbsp&nbspLibe</a>
+                                    </li>
+                                </ul>
+                                <ul class="list">
+                                    <p>Màu</p>
+                                    <li>
+                                        <input type="radio" aria-label="Radio button for following text input">
+                                        <a href="#">Đen</a>
+                                    </li>
+                                    <li>
+                                        <input type="radio" aria-label="Radio button for following text input">
+                                        <a href="#">Trắng</a>
+                                    </li>
+                                    <li>
+                                        <input type="radio" aria-label="Radio button for following text input">
+                                        <a href="#">Xanh dương</a>
+                                    </li>
+                                    <li>
+                                        <input type="radio" aria-label="Radio button for following text input">
+                                        <a href="#">Hồng</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+
+                        <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
+                            <div class="l_w_title">
+                                <h3>Giá</h3>
+                            </div>
+                            <div class="widgets_inner">
+                                <div class="range_item">
+                                    <!-- <div id="slider-range"></div> -->
+                                    <input type="text" class="js-range-slider" value="" />
+                                    <div class="d-flex align-items-center">
+                                        <div class="price_text">
+                                            <p>Giá :</p>
+                                        </div>
+                                        <div class="price_value d-flex justify-content-center">
+                                            <input type="text" class="js-input-from" id="amount" readonly />
+                                            <span>đến</span>
+                                            <input type="text" class="js-input-to" id="amount" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product_top_bar d-flex justify-content-between align-items-center">
+                                <div class="single_product_menu product_bar_item">
+                                    <h2>Tất cả</h2>
+                                </div>
+                                <div class="product_top_bar_iner product_bar_item d-flex">
+                                    <div class="product_bar_single">
+                                        <select class="wide">
+                                            <option data-display="Bán chạy">Bán chạy</option>
+                                            <option value="1">Giá thấp đến cao</option>
+                                            <option value="2">Giá cao đến thấp</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <% products.forEach(function (product) { %>
+                            <%- include('../product-info.ejs', {product: product}) %>
+                        <% }) %>
+                        
+                        
+                        <div class="col-lg-12 text-center">
+                            <a href="#" class="btn_2">More Items</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Category Product Area =================-->
+
+    <% include ../footer.ejs %>
+
+    <% include ../script.ejs %>
+</body>
+
+</html>
