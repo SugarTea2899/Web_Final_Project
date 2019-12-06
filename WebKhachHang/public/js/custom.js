@@ -328,3 +328,76 @@ function returnHomePage(){
   window.location.href = "/";
   return false;
 }
+
+function getQueryString(id, typeFilter){
+    let hrefString = '/category?';
+    let type = "", brand = "";
+    let check = false;
+    const a = document.getElementById(id);
+    const urlParams = new URLSearchParams(window.location.search);
+    switch (typeFilter)
+    {
+      case 1:
+          if (urlParams.has('type'))
+          {
+              type = type + 'type=' + urlParams.get('type');
+          }
+  
+          if (urlParams.has('brand'))
+          {
+              if (urlParams.get('brand').includes(id) == false)
+                  brand = brand + 'brand=' + urlParams.get('brand') + ',';
+              else
+              {
+                  check = true;
+                  brand = brand + 'brand=' + urlParams.get('brand');
+              }
+          }
+          else
+              brand = brand + 'brand=';
+          
+          if (check == false)
+            brand += id;
+            
+          if (type.length > 0)
+              hrefString = hrefString + type + '&';
+  
+          hrefString = hrefString + brand;
+  
+          
+          if (a !== undefined)
+              a.href = hrefString;
+          break;
+
+      case 0:
+        if (urlParams.has('brand'))
+        {
+            brand = brand + 'brand=' + urlParams.get('brand') ;
+        }
+
+        if (urlParams.has('type'))
+        {
+            if (urlParams.get('type').includes(id) == false)
+                type = type + 'type=' + urlParams.get('type') + ',';
+            else
+            {
+                check = true;
+                type = type + 'type=' + urlParams.get('type');
+            }
+        }
+        else
+            type = type + 'type=';
+
+        if (check == false)
+          type += id;
+
+        hrefString = hrefString + type;
+
+        if (brand.length > 0)
+          hrefString = hrefString + '&' + brand;
+
+        if (a !== undefined)
+            a.href = hrefString;
+        break;
+    }
+}

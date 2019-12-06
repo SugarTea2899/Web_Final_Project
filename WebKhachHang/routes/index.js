@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const categoryController = require('../controller/CategoryController.js');
+
 
 
 /* GET home page. */
@@ -21,10 +21,7 @@ router.get('/', function(req, res, next) {
     }
 });
 
-/* GET category page*/
-router.get('/category', async function(req, res, next) {
-    categoryController.getListProducts(req, res);
-});
+
 
 /* GET tracking page*/
 router.get('/tracking', function(req, res, next) {
