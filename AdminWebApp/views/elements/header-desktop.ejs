@@ -156,13 +156,15 @@
                                         <a href="#">
                                             <i class="zmdi zmdi-settings"></i>Cài đặt</a>
                                     </div>
+                                    <% if (loginname == 'superadmin') {%>
                                     <div class="account-dropdown__item">
-                                            <a href="/register">
+                                            <a href="admin/register">
                                                 <i class="zmdi zmdi-settings"></i>Đăng ký tài khoản mới</a>
                                     </div>
-                                </div>
+                                    <% } %>
+                                </div> 
                                 <div class="account-dropdown__footer">
-                                    <a href="/logout">
+                                    <a href="admin/logout">
                                         <i class="zmdi zmdi-power"></i>Đăng xuất</a>
                                 </div>
                             </div>
