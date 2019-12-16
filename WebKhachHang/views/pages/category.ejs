@@ -143,9 +143,9 @@
                                 </div>
                                 <div class="product_top_bar_iner product_bar_item d-flex">
                                     <div class="product_bar_single">
-                                        <select class="wide">
-                                            <option data-display="Giá thấp đến cao">Giá thấp đến cao</option>
-                                            <option value="1">Giá cao đến thấp</option>
+                                        <select id="sortType" onchange="return getQueryString('sortType',2)" class="wide">
+                                            <option id="o1" value="Giá thấp đến cao" >Giá thấp đến cao</option>
+                                            <option id="o2" value="Giá cao đến thấp" >Giá cao đến thấp</option>
                                         </select>
                                     </div>
                                 </div>
@@ -160,11 +160,9 @@
                         <div class="col-lg-12 text-center">
                             <div class="block-27">
                                 <ul>
-                                  <li class="active"><span>1</span></li>
-                                  <li><a href="#">2</a></li>
-                                  <li><a href="#">3</a></li>
-                                  <li><a href="#">4</a></li>
-                                  <li><a href="#">5</a></li>
+                                    <% for (i = 1; i <= totalPages; i++ ) { %>
+                                        <li id="<%= 'li' + i%>" ><a id="<%= 'p' + i%>" onclick="return getQueryString('<%= 'p' + i %>', 3)" href="#"><%= i%></a></li>
+                                    <% } %>
                                 </ul>
                               </div>
                         </div>
@@ -177,6 +175,25 @@
 
     <% include ../footer.ejs %>
     <% include ../script.ejs %>
+    <script>
+        const sortActive = <%= sortActive%>;
+        const pageActive = <%= pageActive%>;
+        if (sortActive == -1)
+        {
+            document.getElementById('o2').setAttribute('selected', 'selected');
+        }
+        else
+        {
+            if(sortActive == 1)
+            {
+                document.getElementById('o1').setAttribute('selected', 'selected');
+            }
+        }
+
+        const temp = 'li';
+        document.getElementById(temp + pageActive).classList.add('active');
+
+    </script>
 
 </body>
 

@@ -329,28 +329,39 @@ function returnHomePage(){
   return false;
 }
 
+
 function getQueryString(id, typeFilter){
     let hrefString = '/category?';
-    let type = "", brand = "";
+    const urlParams = new URLSearchParams(window.location.search);
+    let type = "", brand = "", sort = "", page="";
+    if (urlParams.has('type'))
+    {
+        type = type + 'type=' + urlParams.get('type');
+    }
+    if (urlParams.has('brand'))
+    {
+        brand = brand + 'brand=' + urlParams.get('brand');
+    }
+    if (urlParams.has('sort'))
+    {
+        sort = sort + 'sort=' + urlParams.get('sort');
+    }
+    if (urlParams.has('page'))
+    {
+        page = page + 'page=' + urlParams.get('page');
+    }
     let check = false;
     const a = document.getElementById(id);
-    const urlParams = new URLSearchParams(window.location.search);
     switch (typeFilter)
     {
       case 1:
-          if (urlParams.has('type'))
+          if (brand.length > 0)
           {
-              type = type + 'type=' + urlParams.get('type');
-          }
-  
-          if (urlParams.has('brand'))
-          {
-              if (urlParams.get('brand').includes(id) == false)
-                  brand = brand + 'brand=' + urlParams.get('brand') + ',';
+              if (brand.includes(id) == false)
+                  brand = brand + ',';
               else
               {
                   check = true;
-                  brand = brand + 'brand=' + urlParams.get('brand');
               }
           }
           else
@@ -361,28 +372,28 @@ function getQueryString(id, typeFilter){
             
           if (type.length > 0)
               hrefString = hrefString + type + '&';
-  
+          
+
           hrefString = hrefString + brand;
   
-          
+          if (sort.length > 0)
+            hrefString = hrefString + '&' + sort;
+
+          if (page.length > 0)
+            hrefString = hrefString + '&' + page;
+
           if (a !== undefined)
               a.href = hrefString;
           break;
 
       case 0:
-        if (urlParams.has('brand'))
+        if (type.length > 0)
         {
-            brand = brand + 'brand=' + urlParams.get('brand') ;
-        }
-
-        if (urlParams.has('type'))
-        {
-            if (urlParams.get('type').includes(id) == false)
-                type = type + 'type=' + urlParams.get('type') + ',';
+            if (type.includes(id) == false)
+                type = type + ',';
             else
             {
                 check = true;
-                type = type + 'type=' + urlParams.get('type');
             }
         }
         else
@@ -395,9 +406,88 @@ function getQueryString(id, typeFilter){
 
         if (brand.length > 0)
           hrefString = hrefString + '&' + brand;
+        
+        if (sort.length > 0)
+          hrefString = hrefString + '&' + sort;
+
+        if (page.length > 0)
+          hrefString = hrefString + '&' + page;
 
         if (a !== undefined)
             a.href = hrefString;
+        break;
+      case 2:
+        let option = "o";
+        if (a.value == "Giá cao đến thấp")
+        {  
+          sort = "sort=-1";
+          option += 2;
+        }
+        else
+        {
+          if(a.value == "Giá thấp đến cao")
+          {  
+            sort = "sort=1";
+            option += 1;
+          }
+        }
+
+        if (type.length > 0)
+          hrefString = hrefString + type;
+        if (brand.length > 0)
+        {
+          if(hrefString.length > 10)
+          {
+            hrefString = hrefString + '&' + brand;
+          }
+          else
+            hrefString = hrefString + brand;
+        }
+
+        if (hrefString.length > 10)
+          hrefString = hrefString + '&' + sort;
+        else
+          hrefString = hrefString + sort;
+        
+        if (page.length > 0)
+          hrefString = hrefString + '&' + page;
+
+        window.location.href = hrefString;
+        break;
+
+      case 3:
+        const pageSelected = a.text;
+        page = "page=" + pageSelected;
+
+        if (type.length > 0)
+          hrefString = hrefString + type;
+        if (brand.length > 0)
+        {
+          if (hrefString.length > 10)
+          {
+            hrefString = hrefString + '&' + brand;
+          }
+          else
+            hrefString = hrefString + brand;
+        }
+
+        if (sort.length > 0)
+        {
+          if (hrefString.length > 10)
+          {
+            hrefString = hrefString + '&' + sort;
+          }
+          else
+            hrefString = hrefString + sort;
+        }
+
+        if (hrefString.length > 10)
+          hrefString = hrefString + '&' + page;
+        else
+          hrefString = hrefString + page;
+
+        if (a !== undefined)
+          a.href = hrefString;
         break;
     }
 }

@@ -7,13 +7,13 @@ const categoryController = require('../controller/CategoryController.js');
 
 /* GET category page*/
 router.get('/', async function(req, res, next) {
-    categoryController.getListProducts(req, res);
+    categoryController.getListProducts(req, res, next);
 });
 
 
 product.find().then(function(docs) {
     docs.forEach(function(doc) {
-        router.get('/' + doc.no, function(req, res, next) {
+        router.get('/' + doc._id, function(req, res, next) {
             productController.getProductDetails(req, res, doc);
         })
     })
