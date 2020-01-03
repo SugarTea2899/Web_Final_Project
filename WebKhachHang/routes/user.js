@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
-const passport = require('../config/passport');
 const userController = require('../controller/UserController');
 
 router.get('/login', function(req, res, next) {
     userController.loginGet(req, res, next);
 });
 
-router.post('/login',passport.authenticate('local', {successRedirect: '/',
-                                                     failureRedirect: '/user/login?erro=1'}));
+router.post('/login', function (req, res, next){
+    userController.login(req, res, next);
+});
 
  /* GET logout page*/
  router.get('/logout', function(req, res, next) {

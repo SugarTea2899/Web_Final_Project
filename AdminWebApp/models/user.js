@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
     username: String,
     email: String,
     password: String,
+    isBanned: Boolean,
+    role: String,
     isActive: Boolean
 }, { collection: 'users' });
 

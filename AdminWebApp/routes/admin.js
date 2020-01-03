@@ -7,7 +7,22 @@ router.get('/login', function(req,res,next) {
     AdminController.getLogin(req, res, next);
 });
 
-router.post('/login',passport.authenticate('local', {successRedirect: '/', failureRedirect: '/admin/login?error=1'}));
+router.post('/login',function(req, res, next){
+    passport.authenticate('local', function(err, user, info){
+        console.log("123");
+        if (err)
+            return next(err);
+        if (!user){
+            res.redirect('/admin/login?error=' + info.error);
+            return;
+        }
+        req.logIn(user, function(err){
+            if (err)
+                return next(err);
+            return res.redirect('/')
+        });
+    })(req, res, next);
+});
 
 /* GET logout page*/
 router.get('/logout', function(req, res, next) {

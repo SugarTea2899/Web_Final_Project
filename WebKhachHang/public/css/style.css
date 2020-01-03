@@ -8306,3 +8306,8 @@ h6 {
       color: #fff;
       border: 1px solid transparent; }
 /*# sourceMappingURL=../css/style.map */
+
+.span-item {
+  color: royalblue;
+  font-weight: bolder;
+}

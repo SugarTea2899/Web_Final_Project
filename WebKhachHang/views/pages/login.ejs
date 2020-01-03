@@ -57,11 +57,17 @@
     <!--================login_part end =================-->
 
 
-    <% if (isLoginFailed) { %>
-        <script>
-            alert("Tài khoản/mật khẩu sai hoặc chưa xác thực email!!");
-        </script>
-    <% } %>
+    <script>
+        const error = <%= error%>;
+        if (error == 0)
+            alert("Tài khoản không tồn tại.");
+        if (error == 1)
+            alert("Mật khẩu sai.");
+        if (error == 2)
+            alert("Tài khoản chưa xác thực email.");
+        if (error == 3)
+            alert("Tài khoản của bạn đã bị khoá.");    
+    </script>
     <% include ../footer.ejs %>
 
     <% include ../script.ejs %>

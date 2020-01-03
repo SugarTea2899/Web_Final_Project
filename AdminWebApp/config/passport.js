@@ -1,17 +1,28 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const adminDB = require('../models/admin');
 const bcrypt = require('bcrypt');
+const userDB = require('../models/user');
 
 passport.use(new LocalStrategy(
   async function(username, password, done) {
     try{
-        const admin = await adminDB.findOne({username: username});
-        const res = await bcrypt.compare(password, admin.password);
-        if (res == true)
-            return done(null, admin);
+        const user = await userDB.findOne({username: username});
+
+        if (user == null)
+            return done(null, false,{error: 0});
+
+        const res = await bcrypt.compare(password, user.password);
+        if (res == true && user.role == "admin" && user.isBanned == false)
+            return done(null, user);
         else
-            return done(null, false);
+        {
+            if (res == false)
+                return done(null, false, {error: 1});
+            if (user.role == "user")
+                return done(null, false, {error: 0});
+            if (user.isBanned == true)
+                return done(null, false, {error: 2});
+        }
     }
     catch(e){
         return done(null, false);
@@ -26,8 +37,8 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
     try
     {
-        const admin = await adminDB.findById(id);
-        return done(null, admin);
+        const user = await userDB.findById(id);
+        return done(null, user);
     }
     catch(e){
         done(null, false);

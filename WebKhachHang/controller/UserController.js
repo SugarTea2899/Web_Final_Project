@@ -1,5 +1,6 @@
 const userDB = require('../models/users.js');
 const bcrypt = require('bcrypt');
+const passport = require('../config/passport');
 const saltRounds = 10;
 let transporter = require('../config/nodemailer');
 
@@ -31,18 +32,17 @@ async function checkUserEmail(email){
 
 module.exports= {
     loginGet: function(req, res, next){
-        let isLoginFailed = req.query.erro;
-        if (isLoginFailed === undefined)
-            isLoginFailed = false;
-        else
-            isLoginFailed = true;
+        let error = req.query.error;
+        if (error === undefined)
+            error = -1;
+
         if (req.isAuthenticated())
         {
             res.render('pages/login',{
                 isAuthenticated: true,
                 username: req.user.fullName,
                 breadcrumbValue: "Trang chủ / Đăng nhập",
-                isLoginFailed: isLoginFailed
+                error: error
             } );
         }
         else
@@ -51,9 +51,24 @@ module.exports= {
                 isAuthenticated: false,
                 username: null,
                 breadcrumbValue: "Trang chủ / Đăng nhập",
-                isLoginFailed: isLoginFailed
+                error: error
             });
         }
+    },
+    login: function (req, res, next){
+        passport.authenticate('local', function(err, user, info){
+            if (err)
+                return next(err);
+            if (!user){
+                res.redirect('/user/login?error=' + info.error);
+                return;
+            }
+            req.logIn(user, function (err){
+                if (err) 
+                    return next(err);
+                return res.redirect('/');
+            })
+        })(req, res, next);
     },
 
     logout: function (req, res, next){
@@ -94,7 +109,9 @@ module.exports= {
                 email: req.body.email,
                 username: req.body.username,
                 password: hashPass,
-                isActive: false
+                isActive: false,
+                isBanned: false,
+                role: "user"
             });
     
             await registedUser.save();

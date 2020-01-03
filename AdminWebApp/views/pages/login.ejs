@@ -69,9 +69,15 @@
     <!-- Main JS-->
     <script src="js/main.js"></script>
 
-    <% if (ero) { %>
-        <script> alert("Tên đăng nhập và mặt khẩu chưa đúng!")</script>
-    <% } %>
+    <script> 
+        const error = <%= ero%>;
+        if (error == 0)
+            alert("Tài khoản không tồn tại.");
+        if (error == 1)
+            alert("Mật khẩu sai.");
+        if (error == 2)
+            alert("Tài khoản đã bị khoá.");
+    </script>
 
 </body>
 

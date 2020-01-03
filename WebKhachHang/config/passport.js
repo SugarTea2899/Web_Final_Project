@@ -8,12 +8,21 @@ passport.use(new LocalStrategy(
     try{
         const user = await userDB.findOne({username: username});
         if (user == null)
-            return done(null, false);
+            return done(null, false, {error: 0});
         const res = await bcrypt.compare(password, user.password);
-        if (res == true && user.isActive == true)
+        if (res == true && user.isActive == true && user.role == "user" && user.isBanned == false)
             return done(null, user);
         else
-            return done(null, false);
+        {
+            if (res == false)
+                return done(null, false, {error: 1});
+            if (user.isActive == false)
+                return done(null, false, {error: 2});
+            if (user.role == "admin")
+                return done(null, false, {error: 0});
+            if (user.isBanned == true)
+                return done(null, false, {error: 3});
+        }
     }
     catch(e){
         throw (e);

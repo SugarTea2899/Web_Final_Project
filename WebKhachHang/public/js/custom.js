@@ -219,19 +219,13 @@
     var min = el.attr('min') || false;
     var max = el.attr('max') || false;
 
-    var els = {};
-
-    els.dec = el.prev();
-    els.inc = el.next();
-
     el.each(function() {
       init($(this));
     });
 
     function init(el) {
-
-      els.dec.on('click', decrement);
-      els.inc.on('click', increment);
+      el.prev().on('click', decrement);
+      el.next().on('click', increment);
 
       function decrement() {
         var value = el[0].value;

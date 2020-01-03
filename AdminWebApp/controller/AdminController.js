@@ -1,14 +1,13 @@
 const passport = require('../config/passport');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const AdminController = require('../controller/AdminController');
+const userDB = require('../models/user');
 const admin = require('../models/admin');
-const user = require('../models/user')
 
 async function checkUserInfo(username){
     try{
-        const Admin = await adminDB.findOne({username: username});
-        if (Admin == null)
+        const user = await userDB.findOne({username: username});
+        if (user == null)
             return true;
         return false;
     }
@@ -18,7 +17,7 @@ async function checkUserInfo(username){
     }
 }
 
-adminDB = require('../models/admin.js');
+
 module.exports= {
     loginGet: function(req, res, next) {
         if (req.isAuthenticated()) {
@@ -36,11 +35,9 @@ module.exports= {
     getLogin: function(req, res, next) {
         let ero = req.query.error;
         if (ero === undefined) {
-            ero = false;
+            ero = -1;
         }
-        else {
-            ero = true;
-        }
+
         if (req.isAuthenticated()) {
             res.redirect('/');
         }
@@ -82,11 +79,13 @@ module.exports= {
                 return;
             }
             const hashPass = await bcrypt.hash(req.body.password, saltRounds);
-            const registedUser = new admin({
+            const registedUser = new userDB({
                 fullName: req.body.fullName,
                 email: req.body.email,
                 username: req.body.username,
-                password: hashPass
+                password: hashPass,
+                isBanned: false,
+                role: "admin"
             });
             
             await registedUser.save();
@@ -99,7 +98,7 @@ module.exports= {
 
     getListUsers: async function(req, res) {
         const adminAccounts = await admin.find();
-        const userAccounts = await user.find();
+        const userAccounts = await userDB.find();
         if (req.isAuthenticated()) {
             res.render('pages/table',{
                 adminAccounts: adminAccounts,
