@@ -45,7 +45,7 @@
                                 </li>
                             <% } else {%>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/user/logout">Đăng xuất</a>
+                                    <a onclick="return removeLocal();" class="nav-link" href="/user/logout">Đăng xuất</a>
                                 </li>
                             <% } %>
                         </ul>
@@ -56,9 +56,9 @@
                             <h4> <%= username %></h4>
                         <% } %>
                         <div>
-                            <a href="/cart">
+                            <a id="my-cart" href="/cart">
                                 <i class="ti-bag"></i>
-                                <span class="span-item">16</span>
+                                <span id="cart-size" class="span-item">0</span>
                             </a>
                         </div>
                     </div>

@@ -22,23 +22,19 @@ module.exports = {
                 if (req.isAuthenticated())
                 {
                     res.render('pages/category',{
-                        products: docs,
                         isAuthenticated: true,
                         username: req.user.fullName,
                         sortActive: sort,
                         pageActive: page,
-                        totalPages: totalPages
                     } );
                 }
                 else
                 {
                     res.render('pages/category', {
-                        products: docs,
                         isAuthenticated: false,
                         username: null,
                         sortActive: sort,
                         pageActive: page,
-                        totalPages: totalPages
                     });
                 }
             } else {
@@ -55,23 +51,19 @@ module.exports = {
                     if (req.isAuthenticated())
                     {
                         res.render('pages/category',{
-                            products: docs,
                             isAuthenticated: true,
                             username: req.user.fullName,
                             sortActive: sort,
                             pageActive: page,
-                            totalPages: totalPages
                         } );
                     }
                     else
                     {
                         res.render('pages/category', {
-                            products: docs,
                             isAuthenticated: false,
                             username: null,
                             sortActive: sort,
                             pageActive: page,
-                            totalPages: totalPages
                         });
                     }
                 } else {
@@ -87,18 +79,15 @@ module.exports = {
                         if (req.isAuthenticated())
                         {
                             res.render('pages/category',{
-                                products: docs,
                                 isAuthenticated: true,
                                 username: req.user.fullName,
                                 sortActive: sort,
                                 pageActive: page,
-                                totalPages: totalPages
                             } );
                         }
                         else
                         {
                             res.render('pages/category', {
-                                products: docs,
                                 isAuthenticated: false,
                                 username: null,
                                 sortActive: sort,
@@ -122,7 +111,6 @@ module.exports = {
                         if (req.isAuthenticated())
                         {
                             res.render('pages/category',{
-                                products: docs,
                                 isAuthenticated: true,
                                 username: req.user.fullName,
                                 sortActive: sort,
@@ -133,7 +121,6 @@ module.exports = {
                         else
                         {
                             res.render('pages/category', {
-                                products: docs,
                                 isAuthenticated: false,
                                 username: null,
                                 sortActive: sort,

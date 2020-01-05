@@ -10,14 +10,16 @@ router.get('/', function(req, res, next) {
     {
         res.render('pages/index',{
             isAuthenticated: true,
-            username: req.user.fullName
+            username: req.user.fullName,
+            id: req.user._id
         } );
     }
     else
     {
         res.render('pages/index', {
             isAuthenticated: false,
-            username: null
+            username: null,
+            id: null
         });
     }
 });
@@ -79,7 +81,7 @@ router.get('/cart', function(req, res, next) {
         res.render('pages/cart', {
             breadcrumbValue: "Trang chủ / Giỏ hàng",
             isAuthenticated: false,
-            username: null,
+            username: null
         });
     } 
     
