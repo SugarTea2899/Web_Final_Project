@@ -43,4 +43,8 @@ router.get('/table', function(req, res, next) {
     AdminController.getListUsers(req, res);
 });
 
+router.get('/product', function(req, res, next) {
+    AdminController.getProducts(req, res);
+});
+
 module.exports = router;

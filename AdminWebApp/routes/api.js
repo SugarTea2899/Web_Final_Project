@@ -17,4 +17,9 @@ router.get('/list-user', function(req, res, next){
   api.loadAccounts(req, res, next);
 });
 
+router.get('/list-product', function(req, res, next){
+  //code->res
+  api.loadProducts(req, res, next);
+});
+
 module.exports = router;
