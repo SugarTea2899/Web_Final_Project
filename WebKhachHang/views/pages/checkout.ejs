@@ -14,23 +14,6 @@
   <!--================Checkout Area =================-->
   <section class="checkout_area section_padding">
     <div class="container">
-      <div class="returning_customer">
-        <div class="check_title">
-          <h2>
-            Bạn chưa đăng nhập?
-            <a href="/login">Click vào đây để đăng nhập</a>
-          </h2>
-        </div>
-      </div>
-      <div class="cupon_area">
-        <div class="check_title">
-          <h2>
-            Nhập mã ưu đãi (nếu có)
-          </h2>
-        </div>
-        <input type="text" placeholder="Enter coupon code" />
-        <a class="tp_btn" href="#">Áp dụng</a>
-      </div>
       <div class="billing_details">
         <div class="row">
           <div class="col-lg-8">
@@ -40,9 +23,7 @@
                 <input type="text" class="form-control" id="first" name="name" />
                 <span class="placeholder" data-placeholder="Họ và Tên"></span>
               </div>
-              <div class="col-md-12 form-group">
-                <input type="text" class="form-control" id="company" name="company" placeholder="Tên công ty" />
-              </div>
+
               <div class="col-md-6 form-group p_star">
                 <input type="text" class="form-control" id="number" name="number" />
                 <span class="placeholder" data-placeholder="Số điện thoại"></span>
@@ -55,17 +36,6 @@
                 <input type="text" class="form-control" id="add1" name="add1" />
                 <span class="placeholder" data-placeholder="Địa chỉ"></span>
               </div>
-              <div class="col-md-12 form-group p_star">
-                <input type="text" class="form-control" id="city" name="city" />
-                <span class="placeholder" data-placeholder="Thành phố/tỉnh"></span>
-              </div>
-              <div class="col-md-12 form-group p_star">
-                <select class="country_select">
-                  <option value="1">Quận A</option>
-                  <option value="2">Quận B</option>
-                  <option value="4">Quận C</option>
-                </select>
-              </div>
               <div class="col-md-12 form-group">
                 <textarea class="form-control" name="message" id="message" rows="1"
                   placeholder="Ghi chú thêm"></textarea>
@@ -75,14 +45,14 @@
           <div class="col-lg-4">
             <div class="order_box">
               <h2>Đơn hàng của bạn</h2>
-              <ul class="list">
+              <ul id="pending-list" class="list">
                 <li>
                   <a href="#">Sản phẩm
                     <span>Giá tiền</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#">Fresh Blackberry
+                  <a href="#">Fresh B
                     <span class="middle">x 02</span>
                     <span class="last">$720.00</span>
                   </a>
@@ -106,34 +76,15 @@
                     <span>$2160.00</span>
                   </a>
                 </li>
-                <li>
-                  <a href="#">Vận chuyển
-                    <span>$50.00</span>
-                  </a>
-                </li>
+
                 <li>
                   <a href="#">Tổng
                     <span>$2210.00</span>
                   </a>
                 </li>
               </ul>
-              <div class="payment_item">
-                <div class="radion_btn">
-                  <input type="radio" id="f-option5" name="selector" />
-                  <label for="f-option5">Thanh toán khi nhận hàng</label>
-                  <div class="check"></div>
-                </div>
-                <p>
-                  Từ 3-5 ngày tuỳ nơi nhận hàng.
-                </p>
-              </div>
-              <div class="payment_item active">
-                <div class="radion_btn">
-                  <input type="radio" id="f-option6" name="selector" />
-                  <label for="f-option6">Thanh toán qua ngân hàng </label>
-                  <div class="check"></div>
-                </div>
-              </div>
+
+
               <a class="btn_3" href="#">Thanh toán</a>
             </div>
           </div>
@@ -146,6 +97,17 @@
   <% include ../footer.ejs %>
 
   <% include ../script.ejs %>
+  <script>
+    function addProduct(name, quantity, price) {
+      const htmlElement = '<li> <a href="#">'+ name +'<span class="middle">x'+quantity+'</span> <span class="last">'+price+'</span> </a> </li>';
+      const li = document.createElement('li');
+      li.className = "";
+      li.innerHTML = htmlElement;
+      const pendingProductList = document.getElementById('pending-list');
+      pendingProductList.appendChild(li);
+
+    }
+  </script>
 </body>
 
 </html>
