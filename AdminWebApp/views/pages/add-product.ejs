@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <% include ../elements/header.ejs %>
+
+</head>
+
+<body class="animsition">
+  <div class="page-wrapper">
+    <% include ../elements/mobile-menu.ejs %>
+    <% include ../elements/pc-menu.ejs %>
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+
+      <!-- HEADER DESKTOP-->
+      <% include ../elements/header-desktop.ejs %>
+      <!-- MAIN CONTENT-->
+      <div class="main-content">
+        <div class="section__content section__content--p30">
+          <div class="container-fluid">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Thêm sản phẩm</strong>
+                </div>
+
+                <div class="card-body card-block">
+                <form method="POST" enctype="multipart/form-data" onsubmit="return validate_fileUpload()">
+                  <div class="form-group">
+                    <label>Tên sản phẩm</label>
+                    <input class="au-input au-input--full" type="text" name="name" placeholder="Tên sản phẩm...">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Loại</label>
+                    <select name="type" id="SelectType" class="form-control-sm form-control">
+                      <option value="0">Loại sản phẩm</option>
+                      <option value="áo khoác">Áo khoác</option>
+                      <option value="giày">Giày</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Giá tiền</label>
+                    <input class="au-input au-input--full" type="number" min="0" name="price" placeholder="Giá tiền..." value="0">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Số lượng</label>
+                    <input class="au-input au-input--full" type="number" min="0" name="quantity" placeholder="Số lượng..." value="0">
+                  </div>
+
+                  <div class="form-group">
+                    <input type="file" id="file-image" name="image" class="form-control-file">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Nhãn hiệu</label>
+                    <select name="brand" id="SelectBrand" class="form-control-sm form-control">
+                    <option value="0">Nhãn hiệu</option>
+                    <option value="Winter">Winter</option>
+                    <option value="Magonn">Magonn</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                      <i class="fa fa-dot-circle-o"></i> Xác nhận
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="copyright">
+                      <p id='p'>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END MAIN CONTENT-->
+        <!-- END PAGE CONTAINER-->
+      </div>
+
+  </div>
+
+  <% include ../elements/scripts.ejs %>
+
+  <script>
+
+    function validate_fileUpload() {
+        const allowed_extensions = new Array("jpg", "png");
+        const filename = document.getElementById('file-image').value;
+        const file_extensions = filename.split('.').pop().toLowerCase();
+        for (i = 0; i <= allowed_extensions.length; i++) {
+            if (allowed_extensions[i] == file_extensions) {
+                return true;
+            }
+        }
+
+        const name = document.getElementsByName('name').value;
+        const price = document.getElementsByName('price').value;
+        const quantity = document.getElementsByName('quantity').value;
+        const brand = document.getElementsByName('brand').value;
+        const type = document.getElementsByName('type').value;
+        if (name == null || price == 0 || quantity == 0 || brand == 0 || type == 0) {
+          alert("Bạn cần phải nhập đầy đủ thông tin !");
+          return false;
+        }
+
+        alert('Hình ảnh không đúng định dạng (jpg/png)');
+        return false;
+    }
+
+    let result = <%= result %>;
+    if (result == 1)
+      alert("Thêm sản phẩm thành công");
+    if (result == 0)
+      alert("Thêm sản phẩm không thành công");
+  </script>
+
+</body>
+
+</html>

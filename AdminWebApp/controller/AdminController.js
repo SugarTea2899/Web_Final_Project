@@ -63,7 +63,7 @@ module.exports= {
     registerAccount: function(req, res, next) {
         if (req.isAuthenticated()) {
             res.render('pages/register', {
-                isSameUser:false  
+                isSameUser:false
             });
         }
         else {
@@ -87,7 +87,7 @@ module.exports= {
                 isBanned: false,
                 role: "admin"
             });
-            
+
             await registedUser.save();
             res.redirect('/');
         }
@@ -101,11 +101,11 @@ module.exports= {
         const userAccounts = await userDB.find();
         if (req.isAuthenticated()) {
             res.render('pages/table',{
-                adminAccounts: adminAccounts,
-                userAccounts: userAccounts,
                 loginname: req.user.username,
                 isAuthenticated: true,
-                username: req.user.fullName
+                username: req.user.fullName,
+                id: req.user._id,
+                role: req.user.role
             });
         }
         else
@@ -113,4 +113,17 @@ module.exports= {
             res.redirect('/admin/login');
         }
     },
+
+    getProducts: function(req, res) {
+      if (req.isAuthenticated()) {
+        res.render('pages/product', {
+          loginname: req.user.username,
+          isAuthenticated: true,
+          username: req.user.fullName
+        });
+      }
+      else {
+        res.redirect('/admin/login');
+      }
+    }
 }
