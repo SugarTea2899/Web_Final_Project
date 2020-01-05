@@ -100,7 +100,7 @@ module.exports= {
         const adminAccounts = await admin.find();
         const userAccounts = await userDB.find();
         if (req.isAuthenticated()) {
-            res.render('pages/table',{                          
+            res.render('pages/table',{
                 loginname: req.user.username,
                 isAuthenticated: true,
                 username: req.user.fullName,
@@ -113,4 +113,17 @@ module.exports= {
             res.redirect('/admin/login');
         }
     },
+
+    getProducts: function(req, res) {
+      if (req.isAuthenticated()) {
+        res.render('pages/product', {
+          loginname: req.user.username,
+          isAuthenticated: true,
+          username: req.user.fullName
+        });
+      }
+      else {
+        res.redirect('/admin/login');
+      }
+    }
 }

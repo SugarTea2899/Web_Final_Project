@@ -21,4 +21,13 @@ router.get('/ban-user', function(req, res, next) {
   api.banAccount(req, res, next);
 });
 
+router.get('/list-product', function(req, res, next){
+  //code->res
+  api.loadProducts(req, res, next);
+});
+
+router.get('/remove-product', function(req, res, next) {
+  api.deleteProduct(req, res, next);
+});
+
 module.exports = router;

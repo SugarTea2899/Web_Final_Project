@@ -5,10 +5,11 @@ mongoose.connect(process.env.URI, { useUnifiedTopology: true, useNewUrlParser: t
 const productSchema = new mongoose.Schema({
     name: String,
     type: String,
-    price: String,
+    price: Number,
     image: String,
     brand: String,
-    no: String
+    no: String,
+    quantity: Number
 }, { collection: 'products' });
 
 module.exports = mongoose.model('product', productSchema);

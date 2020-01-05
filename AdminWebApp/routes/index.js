@@ -7,4 +7,8 @@ router.get('/', function(req, res, next) {
   AdminController.loginGet(req, res, next);
 });
 
+router.get('/product', function(req, res, next) {
+  AdminController.getProducts(req, res);
+});
+
 module.exports = router;

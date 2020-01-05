@@ -38,14 +38,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
-
-
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="user-data__footer">
-                                        <button class="au-btn au-btn-load" onclick="return addList();">load more</button>
+                                    <div id="loadmore" class="user-data__footer">
+                                        <button class="au-btn au-btn-load" onclick="return addList();">xem thêm</button>
                                     </div>
                                 </div>
                                 <!-- END USER DATA-->
@@ -149,9 +146,9 @@
       let page = 0;
       const curId = "<%= id%>";
       const curRole = "<%= role%>";  
+      let totalAccount;
+
       addList();
-
-
 
       async function addList() {
         page = page + 1;
@@ -159,7 +156,6 @@
 
         var tableRef = document.getElementById('accountTable').getElementsByTagName('tbody')[0];
         tableRef.innerHTML = '';
-
 
         for(i = 0; i < userList.length; i++)
         {
@@ -174,15 +170,21 @@
           response = await fetch("http://localhost:3000/api/list-user?page=" + pageNumber);
 
         const data = await response.json();
+
+        const accounts = data.accounts;
+        totalAccount = data.total;
+
         if (response == 'Page number is not defined')
         {
           return;
         }
 
-        for (i=0; i<data.length; i++)
+        for (i=0; i<accounts.length; i++)
         {
-          userList.push(data[i]);
+          userList.push(accounts[i]);
         }
+        if (userList.length == totalAccount)
+          document.getElementById("loadmore").style.visibility = "hidden";
       }
 
        function addRow(name, email, permission, isBanned, id){
@@ -213,7 +215,7 @@
           newCell2.innerHTML = '<td><h5 id="h5-'+id+'">Bị khóa</h5></td>';
         }
 
-        newCell3.innerHTML = '<td> <button onclick="return banUser(this);" id="' + id + '" class="item" data-toggle="tooltip" data-placement="top" title="Lock Account"> <i class="zmdi zmdi-lock"></i> </td>';
+        newCell3.innerHTML = '<td> <button onclick="return banUser(this);" id="' + id + '" class="item" data-toggle="tooltip" data-placement="top" title="Khóa tài khoản"> <i class="zmdi zmdi-lock"></i> </td>';
       }
 
       async function banUser(tag) {
