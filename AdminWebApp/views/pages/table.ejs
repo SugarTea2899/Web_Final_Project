@@ -31,11 +31,8 @@
                                         <table id="accountTable" class="table">
                                             <thead>
                                                 <tr>
-                                                    <td>
-                                                    </td>
                                                     <td>Họ Tên</td>
                                                     <td>Vai trò</td>
-                                                    <td>Quyền hạn</td>
                                                     <td>Trạng thái</td>
                                                     <td></td>
                                                 </tr>
@@ -150,7 +147,8 @@
     <script>
       let userList = [];
       let page = 0;
-
+      const curId = "<%= id%>";
+      const curRole = "<%= role%>";  
       addList();
 
 
@@ -165,7 +163,7 @@
 
         for(i = 0; i < userList.length; i++)
         {
-          addRow(userList[i].fullName, userList[i].email, userList[i].role, userList[i].isBanned);
+          addRow(userList[i].fullName, userList[i].email, userList[i].role, userList[i].isBanned, userList[i]._id);
         }
       }
 
@@ -187,44 +185,60 @@
         }
       }
 
-       function addRow(name, email, permission, isBanned){
+       function addRow(name, email, permission, isBanned, id){
         var tableRef = document.getElementById('accountTable').getElementsByTagName('tbody')[0];
 
         var newRow = tableRef.insertRow();
-
         var newCell0 = newRow.insertCell(0);
         var newCell1 = newRow.insertCell(1);
         var newCell2 = newRow.insertCell(2);
         var newCell3 = newRow.insertCell(3);
         var newCell4 = newRow.insertCell(4);
-        var newCell5 = newRow.insertCell(5);
 
-        newCell0.innerHTML = '<td><label class="au-checkbox"><input type="checkbox"><span class="au-checkmark"></span></label></td>';
-        newCell1.innerHTML = '<td><div class="table-data__info"><h6>' +  name + '</h6><span><a href="#">' + email + '</a></span></div></td>';
+        newCell0.innerHTML = '<td><div class="table-data__info"><h6>' +  name + '</h6><span><a href="#">' + email + '</a></span></div></td>';
 
         if (email === 'superadmin@gmail.com')
-          newCell2.innerHTML = '<span class="role admin">Super Admin</span>';
+          newCell1.innerHTML = '<span id="rolec-'+id+'" class="role admin">Super Admin</span>';
         else if (permission == 'admin') {
-          newCell2.innerHTML = '<span class="role member">Admin</span>';
+          newCell1.innerHTML = '<span id="rolec-'+id+'" class="role member">Admin</span>';
         }
         else if (permission == 'user') {
-          newCell2.innerHTML = '<span class="role user">User</span>';
+          newCell1.innerHTML = '<span id="rolec-'+id+'" class="role user">User</span>';
         }
-
-        newCell3.innerHTML = '<div class="rs-select2--trans rs-select2--sm"> <select class="js-select2 select2-hidden-accessible" name="property" tabindex="-1" aria-hidden="true"> <option selected="selected">Full Control</option> <option value="">Post</option> <option value="">Watch</option> </select><span class="select2 select2-container select2-container--default select2-container--focus" dir="ltr" style="width: 106px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-property-5v-container"><span class="select2-selection__rendered" id="select2-property-5v-container" title="Full Control">Full Control</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> <div class="dropDownSelect2"></div></div>';
         if (isBanned == false)
         {
-          newCell4.innerHTML =  '<td><h5>Hoạt động</h5></td>';
+          newCell2.innerHTML =  '<td><h5 id="h5-'+id+'">Hoạt động</h5></td>';
         }
         else {
-          newCell4.innerHTML = '<td><h5>Bị khóa</h5></td>';
+          newCell2.innerHTML = '<td><h5 id="h5-'+id+'">Bị khóa</h5></td>';
         }
 
-        newCell5.innerHTML = '<td> <span class="more"> <i class="zmdi zmdi-more"></i> </span> </td>';
+        newCell3.innerHTML = '<td> <button onclick="return banUser(this);" id="' + id + '" class="item" data-toggle="tooltip" data-placement="top" title="Lock Account"> <i class="zmdi zmdi-lock"></i> </td>';
       }
 
-
-
+      async function banUser(tag) {
+            if (curRole == 'user') {
+                alert('Bạn không có quyền khóa tài khoản này');
+                return;
+            }
+            const id = tag.id;
+            const rolec = 'rolec-' + id;
+            const role = document.getElementById(rolec).innerText;
+            if (curRole == 'admin' && (role == 'Admin' || role == 'Super Admin')) {
+                alert('Bạn không có quyền xóa tài khoản này');
+                return;
+            }
+            const response = await fetch("http://localhost:3000/api/ban-user?id=" + tag.id);
+            const result = await response.json();
+            if (result.res == false)
+                return;
+            const str = 'h5-' + tag.id;
+            let status = document.getElementById(str);
+            if (status.innerText == 'Hoạt động')
+                status.innerText = 'Bị khóa';
+            else
+                status.innerText = "Hoạt động";
+      }
     </script>
 </body>
 

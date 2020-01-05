@@ -103,7 +103,9 @@ module.exports= {
             res.render('pages/table',{                          
                 loginname: req.user.username,
                 isAuthenticated: true,
-                username: req.user.fullName
+                username: req.user.fullName,
+                id: req.user._id,
+                role: req.user.role
             });
         }
         else

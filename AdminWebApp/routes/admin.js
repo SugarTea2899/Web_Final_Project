@@ -1,6 +1,8 @@
 var express = require('express');
 const passport = require('../config/passport');
 const AdminController = require('../controller/AdminController');
+const UploadController = require('../controller/UploadController');
+const ProductController = require('../controller/ProductController');
 var router = express.Router();
 
 router.get('/login', function(req,res,next) {
@@ -32,6 +34,10 @@ router.get('/logout', function(req, res, next) {
 /* GET register page. */
 router.get('/register', function(req, res, next) {
     AdminController.registerAccount(req, res, next);
+});
+
+router.post('/register', async function(req, res, next){
+    AdminController.postUserInfoToDatabase(req, res, next);
 });
 
 router.post('/register', async function(req, res, next){

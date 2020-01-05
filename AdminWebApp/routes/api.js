@@ -17,4 +17,8 @@ router.get('/list-user', function(req, res, next){
   api.loadAccounts(req, res, next);
 });
 
+router.get('/ban-user', function(req, res, next) {
+  api.banAccount(req, res, next);
+});
+
 module.exports = router;

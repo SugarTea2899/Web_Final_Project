@@ -12,7 +12,7 @@ passport.use(new LocalStrategy(
             return done(null, false,{error: 0});
 
         const res = await bcrypt.compare(password, user.password);
-        if (res == true && user.role == "admin" && user.isBanned == false)
+        if (res == true && (user.role == "admin" || user.role == "superadmin") && user.isBanned == false)
             return done(null, user);
         else
         {

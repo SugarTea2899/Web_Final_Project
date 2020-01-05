@@ -26,9 +26,26 @@ module.exports={
       return;
     }
 
-    const userAccounts = await user.find().skip(1 * (page - 1)).limit(1);
+    const userAccounts = await user.find().skip(5 * (page - 1)).limit(5);
     console.log(userAccounts.length);
     res.json(userAccounts);
 
+  },
+
+  banAccount: async function(req, res, next) {
+    const id = req.query.id;
+    const banUser = await user.findById(id);
+
+    if (banUser != null) {
+      if (banUser.isBanned == true)
+        banUser.isBanned = false;
+      else
+        banUser.isBanned = true;
+      await banUser.save();
+
+      res.json({res: true});
+    }else{
+      res.json({res: false});
+    }
   }
 }
