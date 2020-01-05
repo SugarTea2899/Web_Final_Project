@@ -1,5 +1,7 @@
 const productDB = require('../models/product');
 const cartDB = require('../models/cart');
+const billDB = require('../models/bill');
+const billDetailDB = require('../models/bill-detail');
 
 module.exports = {
     getListProduct: async function(req, res, next){
@@ -117,5 +119,51 @@ module.exports = {
         }
 
         res.json(cartList);
+    },
+
+    checkOutBill: async function(req, res, next){
+        const data = req.body;
+        const bill = new billDB({
+            fullname: data.userInfo.name,
+            phone: data.userInfo.phone,
+            userId: data.userInfo.id,
+            email: data.userInfo.email,
+            address: data.userInfo.address,
+            note: data.userInfo.note,
+            createOn: data.createOn
+        });
+
+        await bill.save();
+        
+        for (i = 0; i < data.cartList.length; i++){
+            const cartItem = data.cartList[i];
+            const product = await productDB.findById(cartItem.product._id);
+
+            if (product.quantity < cartItem.quantity){
+                const billDel = await billDetailDB.find({billId: bill._id});
+                for (i = 0; i < billDel.length; i++){
+                    await billDetailDB.deleteOne({_id: billDel[i]._id});
+                }
+                await billDB.deleteOne({_id: bill._id});
+                const errMess = 'Lỗi: ' + product.name + ' không đủ số lượng';
+                res.json({res: false, message: errMess});
+                return;
+            }
+
+            product.quantity -= cartItem.quantity;
+
+            const billDetail = new billDetailDB({
+                billId: bill._id,
+                productId: cartItem.product._id,
+                quantity: cartItem.quantity,
+                totalPrice: cartItem.totalPrice
+            });
+            await product.save();
+            await billDetail.save();
+        }
+
+        res.json({res: true});
     }
+
+
 }

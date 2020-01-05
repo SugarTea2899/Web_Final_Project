@@ -94,7 +94,7 @@
           </table>
           <div class="checkout_btn_inner float-right">
             <a class="btn_1" href="/category">Trở lại cửa hàng</a>
-            <a class="btn_1 checkout_btn_1" href="/checkout">Thanh toán</a>
+            <a onclick="return checkOut(this);" class="btn_1 checkout_btn_1" href="/checkout">Thanh toán</a>
           </div>
         </div>
       </div>
@@ -281,6 +281,16 @@
           body: JSON.stringify(data)
       });
     }
+
+    function checkOut(tag){
+      if (isLogin){
+        tag.href = "/user/checkout";
+      }else{
+        alert('Vui lòng đăng nhập để thanh toán!');
+        tag.href = "/user/login";
+      }
+    }
+
   </script>
 </body>
 

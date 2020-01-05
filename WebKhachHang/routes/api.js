@@ -11,6 +11,10 @@ router.post('/update-cart', function(req, res, next){
     api.updateCart(req, res, next);
 })
 
+router.post('/checkout', function(req, res, next){
+    api.checkOutBill(req, res, next);
+})
+
 router.get('/user-cart', function(req, res, next){
     api.getListCart(req, res, next);
 })

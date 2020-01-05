@@ -58,5 +58,20 @@ router.post('/create-password', function(req, res, next) {
     userController.postCreatePassPage(req, res, next);
 });
 
+/* GET checkout page*/
+router.get('/checkout', function(req, res, next) {
+    if (req.isAuthenticated())
+    {
+        res.render('pages/checkout',{
+            breadcrumbValue: "Trang chủ / Thanh toán",
+            isAuthenticated: true,
+            username: req.user.fullName,
+        } );
+    }
+    else
+    {
+        res.redirect('/user/login');
+    }    
+});
 
 module.exports = router;
