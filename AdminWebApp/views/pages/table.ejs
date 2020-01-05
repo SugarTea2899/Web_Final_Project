@@ -10,7 +10,7 @@
     <div class="page-wrapper">
         <% include ../elements/mobile-menu.ejs %>
         <% include ../elements/pc-menu.ejs %>
-    
+
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             <% include ../elements/header-desktop.ejs %>
@@ -28,104 +28,27 @@
                                         <i class="zmdi zmdi-account-calendar"></i>Dữ liệu người dùng</h3>
 
                                     <div class="table-responsive table-data">
-                                        <table class="table">
+                                        <table id="accountTable" class="table">
                                             <thead>
                                                 <tr>
                                                     <td>
-                                                        <label class="au-checkbox">
-                                                            <input type="checkbox">
-                                                            <span class="au-checkmark"></span>
-                                                        </label>
                                                     </td>
                                                     <td>Họ Tên</td>
                                                     <td>Vai trò</td>
                                                     <td>Quyền hạn</td>
+                                                    <td>Trạng thái</td>
                                                     <td></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% adminAccounts.forEach(function (admin) { %>
-                                                    <tr>
-                                                        <td>
-                                                            <label class="au-checkbox">
-                                                                <input type="checkbox">
-                                                                <span class="au-checkmark"></span>
-                                                            </label>
-                                                        </td>
-                                                        <td>
-                                                            <div class="table-data__info">
-                                                                <h6><%= admin.fullName %></h6>
-                                                                <span>
-                                                                    <a href="#"><%= admin.email%></a>
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <% if (admin.username == 'superadmin') { %>
-                                                                <span class="role member">super admin</span>
-                                                            <% } else { %>
-                                                                <span class="role admin">admin</span>
-                                                            <% } %>
-                                                        </td>
-                                                        <td>
-                                                            <div class="rs-select2--trans rs-select2--sm">
-                                                                <select class="js-select2" name="property">
-                                                                    <option selected="selected">Full Control</option>
-                                                                    <option value="">Post</option>
-                                                                    <option value="">Watch</option>
-                                                                </select>
-                                                                <div class="dropDownSelect2"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <span class="more">
-                                                                <i class="zmdi zmdi-more"></i>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                <% }) %>
 
-                                                <% userAccounts.forEach(function (user) { %>
-                                                    <tr>
-                                                        <td>
-                                                            <label class="au-checkbox">
-                                                                <input type="checkbox">
-                                                                <span class="au-checkmark"></span>
-                                                            </label>
-                                                        </td>
-                                                        <td>
-                                                            <div class="table-data__info">
-                                                                <h6><%= user.fullName %></h6>
-                                                                <span>
-                                                                    <a href="#"><%= user.email%></a>
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <span class="role user">user</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="rs-select2--trans rs-select2--sm">
-                                                                <select class="js-select2" name="property">
-                                                                    <option selected="selected">Full Control</option>
-                                                                    <option value="">Post</option>
-                                                                    <option value="">Watch</option>
-                                                                </select>
-                                                                <div class="dropDownSelect2"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <span class="more">
-                                                                <i class="zmdi zmdi-more"></i>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                <% }) %>
+
+
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="user-data__footer">
-                                        <button class="au-btn au-btn-load">load more</button>
+                                        <button class="au-btn au-btn-load" onclick="return addList();">load more</button>
                                     </div>
                                 </div>
                                 <!-- END USER DATA-->
@@ -224,6 +147,85 @@
     </div>
 
     <% include ../elements/scripts.ejs %>
+    <script>
+      let userList = [];
+      let page = 0;
+
+      addList();
+
+
+
+      async function addList() {
+        page = page + 1;
+        await getListUsers(page);
+
+        var tableRef = document.getElementById('accountTable').getElementsByTagName('tbody')[0];
+        tableRef.innerHTML = '';
+
+
+        for(i = 0; i < userList.length; i++)
+        {
+          addRow(userList[i].fullName, userList[i].email, userList[i].role, userList[i].isBanned);
+        }
+      }
+
+
+      async function getListUsers(pageNumber) {
+        var response;
+
+          response = await fetch("http://localhost:3000/api/list-user?page=" + pageNumber);
+
+        const data = await response.json();
+        if (response == 'Page number is not defined')
+        {
+          return;
+        }
+
+        for (i=0; i<data.length; i++)
+        {
+          userList.push(data[i]);
+        }
+      }
+
+       function addRow(name, email, permission, isBanned){
+        var tableRef = document.getElementById('accountTable').getElementsByTagName('tbody')[0];
+
+        var newRow = tableRef.insertRow();
+
+        var newCell0 = newRow.insertCell(0);
+        var newCell1 = newRow.insertCell(1);
+        var newCell2 = newRow.insertCell(2);
+        var newCell3 = newRow.insertCell(3);
+        var newCell4 = newRow.insertCell(4);
+        var newCell5 = newRow.insertCell(5);
+
+        newCell0.innerHTML = '<td><label class="au-checkbox"><input type="checkbox"><span class="au-checkmark"></span></label></td>';
+        newCell1.innerHTML = '<td><div class="table-data__info"><h6>' +  name + '</h6><span><a href="#">' + email + '</a></span></div></td>';
+
+        if (email === 'superadmin@gmail.com')
+          newCell2.innerHTML = '<span class="role admin">Super Admin</span>';
+        else if (permission == 'admin') {
+          newCell2.innerHTML = '<span class="role member">Admin</span>';
+        }
+        else if (permission == 'user') {
+          newCell2.innerHTML = '<span class="role user">User</span>';
+        }
+
+        newCell3.innerHTML = '<div class="rs-select2--trans rs-select2--sm"> <select class="js-select2 select2-hidden-accessible" name="property" tabindex="-1" aria-hidden="true"> <option selected="selected">Full Control</option> <option value="">Post</option> <option value="">Watch</option> </select><span class="select2 select2-container select2-container--default select2-container--focus" dir="ltr" style="width: 106px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-property-5v-container"><span class="select2-selection__rendered" id="select2-property-5v-container" title="Full Control">Full Control</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> <div class="dropDownSelect2"></div></div>';
+        if (isBanned == false)
+        {
+          newCell4.innerHTML =  '<td><h5>Hoạt động</h5></td>';
+        }
+        else {
+          newCell4.innerHTML = '<td><h5>Bị khóa</h5></td>';
+        }
+
+        newCell5.innerHTML = '<td> <span class="more"> <i class="zmdi zmdi-more"></i> </span> </td>';
+      }
+
+
+
+    </script>
 </body>
 
 </html>

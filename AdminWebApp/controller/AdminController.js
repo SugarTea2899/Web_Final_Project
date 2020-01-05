@@ -63,7 +63,7 @@ module.exports= {
     registerAccount: function(req, res, next) {
         if (req.isAuthenticated()) {
             res.render('pages/register', {
-                isSameUser:false  
+                isSameUser:false
             });
         }
         else {
@@ -87,7 +87,7 @@ module.exports= {
                 isBanned: false,
                 role: "admin"
             });
-            
+
             await registedUser.save();
             res.redirect('/');
         }
@@ -100,9 +100,7 @@ module.exports= {
         const adminAccounts = await admin.find();
         const userAccounts = await userDB.find();
         if (req.isAuthenticated()) {
-            res.render('pages/table',{
-                adminAccounts: adminAccounts,
-                userAccounts: userAccounts,
+            res.render('pages/table',{                          
                 loginname: req.user.username,
                 isAuthenticated: true,
                 username: req.user.fullName
