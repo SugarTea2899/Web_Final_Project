@@ -4,6 +4,7 @@ const user = require('../models/user');
 const product = require('../models/product');
 const fs = require('fs');
 const bill_detail = require('../models/bill-detail');
+const bill = require('../models/bill');
 
 
 module.exports={
@@ -80,7 +81,7 @@ module.exports={
       rankingProduct.push({_id: id, name: name, quantity: 0});
       idList.push(id);
     }
-    //Tính tiền của mỗi sản phẩm
+    //Tính số lượng của mỗi sản phẩm
     for(i = 0; i < billDetailList.length; i++)
     {
       var detailId = billDetailList[i].productId;
@@ -105,5 +106,23 @@ module.exports={
     }
 
     res.json(topTen);
+  },
+
+  getSales:async function(req, res, next) {
+
+    const startDate = new Date(req.query.startdate);
+    const endDate = new Date(req.query.enddate);
+    //const now = new Date();
+    endDate.setDate(endDate.getDate() + 1);
+
+    const bills = await bill.find({createOn: {$gte: startDate, $lte: endDate}});
+    let totalPrice = 0;
+
+    for(i = 0; i < bills.length; i++)
+    {
+      totalPrice = totalPrice + bills[i].totalBill;
+    }
+    res.json(totalPrice);
   }
+
 }

@@ -23,10 +23,24 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Thông kê danh thu</h2>
+                                    <h2 class="title-1">Thông kê doanh thu</h2>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                          <div class="col-6">
+                                  <label  class="control-label mb-1">Từ ngày</label>
+                                  <input id="start_date" type="date" class="form-control">
+                                  <h2 class="title-1 text-danger mt-3" id="totalIncome"></h2>
+                          </div>
+                          <div class="col-6">
+                              <label class="control-label mb-1">Đến ngày</label>
+                              <input id="end_date" type="date" class="form-control">
+                              <button type="button" onclick="return calculateSales();" class="btn btn-primary mt-3 float-right">Thống kê</button>
+                          </div>
+                        </div>
+
                         <div class="row m-t-25">
                             <div class="col-sm-6 col-lg-2">
                                 <div class="overview-item overview-item--c4">
@@ -88,6 +102,7 @@
                                         </div>
                                     </div>
                                 </div>
+                        </div>
                         <div class="row">
                             <div class="col-lg-8">
                                 <h2 class="title-1 m-b-25">Danh sách sản phẩm</h2>
@@ -203,8 +218,7 @@
     <% include ../elements/scripts.ejs %>
     <script>
 
-      async function addTopTenList()
-      {
+      async function addTopTenList() {
         var response;
         response = await fetch("http://localhost:3000/api/top-ten");
         const data = await response.json();
@@ -222,6 +236,36 @@
         newRow.innerHTML='<td>'+name+'</td><td class="text-right">'+quantity+'</td>';
       }
 
+      async function calculateSales()
+      {
+        var fromDate =document.getElementById("start_date").value;
+        var toDate = document.getElementById("end_date").value;
+        if ((fromDate == "") || (toDate == ""))
+        {
+            document.getElementById("totalIncome").innerHTML="";
+          return;
+        }
+
+        var response;
+        response = await fetch("http://localhost:3000/api/sales-date?startdate="+ fromDate +"&enddate=" + toDate);
+        var result = await response.json();
+        result = formatMoney(result);
+        document.getElementById("totalIncome").innerHTML=result;
+      }
+
+      function formatMoney(money) {
+        money = money.toString();
+        var format = "";
+        let i = money.length,
+        k = 0;
+        while (i-- > 0) {
+        format = money[i] + format;
+        k++;
+        if (k % 3 === 0 && i != 0) format = "." + format;
+        }
+        format += " VNĐ";
+        return format;
+      }
     </script>
 
 </body>

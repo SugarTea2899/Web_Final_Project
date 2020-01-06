@@ -34,4 +34,8 @@ router.get('/top-ten',function(req, res, next) {
   api.findTopTen(req, res, next);
 });
 
+router.get('/sales-date', function(req, res, next) {
+  api.getSales(req, res, next);
+});
+
 module.exports = router;
