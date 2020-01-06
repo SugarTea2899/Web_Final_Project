@@ -30,4 +30,8 @@ router.get('/remove-product', function(req, res, next) {
   api.deleteProduct(req, res, next);
 });
 
+router.get('/top-ten',function(req, res, next) {
+  api.findTopTen(req, res, next);
+});
+
 module.exports = router;

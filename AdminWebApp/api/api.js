@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const user = require('../models/user');
 const product = require('../models/product');
 const fs = require('fs');
+const bill_detail = require('../models/bill-detail');
+
 
 module.exports={
   loadAccounts: async function(req, res, next){
@@ -61,7 +63,47 @@ module.exports={
       res.json({res: true});
       fs.unlinkSync(link);
     });
-    
+
     await product.save();
+  },
+
+  findTopTen: async function(req, res, next) {
+    const billDetailList = await bill_detail.find();
+    const productList = await product.find();
+
+    let idList = [];
+    var rankingProduct = [];
+    for(i = 0; i < productList.length; i++)
+    {
+      var id = productList[i]._id;
+      var name = productList[i].name;
+      rankingProduct.push({_id: id, name: name, quantity: 0});
+      idList.push(id);
+    }
+    //Tính tiền của mỗi sản phẩm
+    for(i = 0; i < billDetailList.length; i++)
+    {
+      var detailId = billDetailList[i].productId;
+      var index = idList.findIndex(p => p == billDetailList[i].productId);
+      rankingProduct[index].quantity = rankingProduct[index].quantity + billDetailList[i].quantity;
+
+    }
+    //Sắp xếp từ lớn tới nhỏ
+    rankingProduct.sort(function(a,b) {
+      return b.quantity - a.quantity;
+    })
+
+    var topTen = [];
+    for(i=0;i<rankingProduct.length;i++)
+    {
+      if (i == 10)
+      {
+        break;
+      }
+
+      topTen.push(rankingProduct[i]);
+    }
+
+    res.json(topTen);
   }
 }
