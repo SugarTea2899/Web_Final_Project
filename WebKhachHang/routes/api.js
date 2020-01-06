@@ -26,4 +26,8 @@ router.get('/user-cart', function(req, res, next){
 router.get('/cmt-list', function(req, res, next){
     api.getListCmt(req, res, next);
 })
+
+router.get('/user-bill', function(req, res, next){
+    api.getUserBill(req, res, next);
+})
 module.exports = router;

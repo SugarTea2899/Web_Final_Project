@@ -10,105 +10,18 @@
 
   <!--================ confirmation part start =================-->
   <section class="confirmation_part section_padding">
-    <div class="container">
+    <div id="area" class="container">
+      <div id="load" class="loading">
+        <div class="loader"></div>
+      </div>
       <div class="row">
         <div class="col-lg-12">
           <div class="confirmation_tittle">
-            <span>Danh sách đơn hàng được xử lý thành công.</span>
-          </div>
-        </div>
-        <div class="col-lg-6 col-lx-4">
-          <div class="single_confirmation_details">
-            <h4>Thông tin</h4>
-            <ul>
-              <li>
-                <p>Mã đơn hàng</p><span>: 60235</span>
-              </li>
-              <li>
-                <p>Ngày đặt hàng</p><span>: 03/10/2019</span>
-              </li>
-              <li>
-                <p>Tổng hoá đơn</p><span>: USD 2210</span>
-              </li>
-              <li>
-                <p>Phương pháp thanh toán</p><span>: Thanh toán khi nhận hàng</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-6 col-lx-4">
-          <div class="single_confirmation_details">
-            <h4>Địa chỉ shop</h4>
-            <ul>
-              <li>
-                <p>Đường</p><span>: 56/8</span>
-              </li>
-              <li>
-                <p>Thành phố</p><span>: Los Angeles</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-6 col-lx-4">
-          <div class="single_confirmation_details">
-            <h4>Địa chỉ người nhận</h4>
-            <ul>
-              <li>
-                <p>Đường</p><span>: 56/8</span>
-              </li>
-              <li>
-                <p>Thành phố</p><span>: Los Angeles</span>
-              </li>
-            </ul>
+            <span>Danh sách đơn hàng đã nhận.</span>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="order_details_iner">
-            <h3>Chi tiết đơn hàng</h3>
-            <table class="table table-borderless">
-              <thead>
-                <tr>
-                  <th scope="col" colspan="2">Sản phẩm</th>
-                  <th scope="col">Số lượng</th>
-                  <th scope="col">Tổng</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th colspan="2"><span>Pixelstore fresh Blackberry</span></th>
-                  <th>x02</th>
-                  <th> <span>$720.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="2"><span>Pixelstore fresh Blackberry</span></th>
-                  <th>x02</th>
-                  <th> <span>$720.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="2"><span>Pixelstore fresh Blackberry</span></th>
-                  <th>x02</th>
-                  <th> <span>$720.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="3">Giá các sản phẩm</th>
-                  <th> <span>$2160.00</span></th>
-                </tr>
-                <tr>
-                  <th colspan="3">Vận chuyển</th>
-                  <th><span>Vận chuyển thường: $5.00</span></th>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="col">Tổng</th>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </section>
   <!--================ confirmation part end =================-->
@@ -149,6 +62,81 @@
   <% include ../footer.ejs %>
 
   <% include ../script.ejs %>
+
+  <script>
+    const LINK_API = 'http://localhost:3000/api/';
+
+    getListBill();
+
+    async function getListBill(){
+      displayLoading();
+      const userId = window.localStorage.getItem('userId');
+      const response = await fetch(LINK_API + '/user-bill?id=' + userId);
+      const data = await response.json();
+
+      for (i = 0; i < data.length; i++){
+        addBill(i, data[i].fullname, data[i].address, data[i].cartList);
+      }
+      hiddenLoading();
+    }
+
+    function formatMoney(money) {
+        money = money.toString();
+        var format = "";
+        let i = money.length,
+        k = 0;
+        while (i-- > 0) {
+        format = money[i] + format;
+        k++;
+        if (k % 3 === 0 && i != 0) format = "." + format;
+        }
+        format += "VNĐ";
+        return format;
+    }
+
+    function addBill(index, fullname, address, cartList){
+      const htmlElement = '<div class="col-lg-12"> <div class="order_details_iner"> <h3>Chi tiết đơn hàng - ' + fullname + ' - ' + address + 
+        '</h3> <table class="table table-borderless"> <thead> <tr> <th scope="col" colspan="2">Sản phẩm</th> <th scope="col">Số lượng</th> <th class="float-right" scope="col">Tổng</th> </tr></thead> <tbody id="b-' + index + 
+          '"> </tbody> <tfoot id="f-' + index + '"> </tfoot> </table> </div></div>';
+      const div = document.createElement('div');
+      div.className = 'row';
+      div.innerHTML = htmlElement;
+
+      const area = document.getElementById('area');
+      area.appendChild(div);
+      
+      let totalBill = 0;
+      cartList.forEach(item => {
+        addRow('b-' + index, item.product.name, item.quantity, formatMoney(item.totalPrice));
+        totalBill += item.totalPrice;
+      });    
+
+      addTotalRow('f-' + index, formatMoney(totalBill));
+    }
+
+    function addRow(idBody, name, quantity, price){
+      const htmlElement = ' <th colspan="2"><span>' + name + '</span></th> <th>x' + quantity + '</th> <th> <span class="float-right">' + price + '</span></th>';
+      const tr = document.createElement('tr');
+      tr.innerHTML = htmlElement;
+      const body = document.getElementById(idBody);
+      body.appendChild(tr);
+    }
+
+    function addTotalRow(idFoot, totalPrice){
+      const htmlElement = ' <th scope="col" colspan="3">Tổng</th> <th class="float-right">' + totalPrice + '</th>';
+      const tr = document.createElement('tr');
+      tr.innerHTML = htmlElement;
+      const foot = document.getElementById(idFoot);
+      foot.appendChild(tr);
+    }
+
+    function displayLoading(){
+      const loadScreen = document.getElementById('load').style.visibility = "visible";
+    }
+    function hiddenLoading(){
+      const loadScreen = document.getElementById('load').style.visibility = "hidden";
+    }
+  </script>
 </body>
 
 </html>

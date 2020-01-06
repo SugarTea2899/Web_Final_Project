@@ -22,24 +22,7 @@ module.exports = {
             });
         } 
     },
-    getConfirmPage: function(req, res, next){
-        if (req.isAuthenticated())
-        {
-            res.render('pages/confirmation',{
-                breadcrumbValue: "Trang chủ / Xác nhận",
-                isAuthenticated: true,
-                username: req.user.fullName,
-            } );
-        }
-        else
-        {
-            res.render('pages/confirmation', {
-                breadcrumbValue: "Trang chủ / Xác nhận",
-                isAuthenticated: false,
-                username: null,
-            });
-        } 
-    },
+
     
     getHomePage: function(req, res, next){
         if (req.isAuthenticated())

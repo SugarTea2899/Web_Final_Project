@@ -40,7 +40,11 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
                                     <a class="dropdown-item" href="/cart">giỏ hàng</a>
-                                    <a class="dropdown-item" href="/confirmation">xác nhận đơn hàng</a>
+                                    <% if (isAuthenticated) {%> 
+                                        <a class="dropdown-item" href="/user/confirmation">xác nhận đơn hàng</a>
+                                        <a class="dropdown-item" href="/user/reset-password">đổi mật khẩu</a>
+                                        <a class="dropdown-item" href="/user/edit-info">Chỉnh sửa thông tên</a>
+                                    <% } %>
                                 </div>
                             </li>
                         </ul>

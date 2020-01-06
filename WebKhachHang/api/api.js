@@ -194,6 +194,39 @@ module.exports = {
             
             res.json(cmtList);
         }
+    },
+
+    getUserBill: async function(req, res, next){
+        const userId = req.query.id;
+        if (userId === undefined){
+            res.json({res: false});
+        }else{
+            const userBill = await billDB.find({userId: userId});
+            const result = [];
+            for (i = 0; i < userBill.length; i++){
+                const billItem = userBill[i];
+                const cartList = [];
+                const billItemDetail = await billDetailDB.find({billId: billItem._id});
+                for (j = 0; j < billItemDetail.length; j++){
+                    const detail = billItemDetail[j];
+                    const product = await productDB.findById(detail.productId);
+                    const cartItem = {
+                        product: product,
+                        quantity: detail.quantity,
+                        totalPrice: detail.totalPrice
+                    };
+                    cartList.push(cartItem);
+                }
+
+                const billResult = {
+                    cartList: cartList,
+                    fullname: billItem.fullname,
+                    address: billItem.address
+                };
+                result.push(billResult);
+            }
+            res.json(result);
+        }
     }
 
 

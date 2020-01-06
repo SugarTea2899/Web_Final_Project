@@ -6,6 +6,9 @@
 </head>
 
 <body>
+  <div id="load" class="loading">
+    <div class="loader"></div>
+  </div>
   <% include ../main-menu.ejs %>
 
   <!--================Home Banner Area =================-->
@@ -14,11 +17,6 @@
   <!--================Checkout Area =================-->
   <section class="checkout_area section_padding">
     <div class="container">
-
-      <div id="load" class="loading">
-        <div class="loader"></div>
-      </div>
-      
       <div class="billing_details">
         <div class="row">
           <div class="col-lg-8">
@@ -157,7 +155,6 @@
     function removeLocal(){
       window.localStorage.setItem("cartList", "");
       window.localStorage.setItem("cartSize", "0");
-      window.localStorage.setItem("userId", "");
       window.localStorage.setItem("isLoaded", "");
     } 
 
@@ -182,12 +179,26 @@
       const address = document.getElementById('address').value;
       const note = document.getElementById('note').value;
 
+      if (validateEmail() == false)
+      {
+        alert('Nhập sai định dạng email.');
+      }
+
       if (name != "" && email != "" && phone != "" && address != "")
         return true;
       
       return false;
     }
 
+    function validateEmail(){
+      const email = document.getElementById('email').value;
+      const reg = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
+      if (reg.test(email) == false)
+      {
+          return false;
+      }
+      return true;
+    }
     function displayLoading(){
       const loadScreen = document.getElementById('load').style.visibility = "visible";
     }
