@@ -2,6 +2,7 @@ const productDB = require('../models/product');
 const cartDB = require('../models/cart');
 const billDB = require('../models/bill');
 const billDetailDB = require('../models/bill-detail');
+const commentDB = require('../models/comment');
 
 module.exports = {
     getListProduct: async function(req, res, next){
@@ -130,7 +131,8 @@ module.exports = {
             email: data.userInfo.email,
             address: data.userInfo.address,
             note: data.userInfo.note,
-            createOn: data.createOn
+            createOn: data.createOn,
+            totalBill: data.totalBill
         });
 
         await bill.save();
@@ -162,7 +164,69 @@ module.exports = {
             await billDetail.save();
         }
 
+        await cartDB.deleteMany({userId: data.userInfo.id});
         res.json({res: true});
+    },
+
+    sendCmt: async function(req, res, next){
+        const data = req.body;
+        const cmt = new commentDB({
+            userId: data.userId,
+            fullname: data.fullname,
+            createOn: data.createOn,
+            productId: data.productId,
+            cmt: data.cmt
+        });
+        await cmt.save();
+        res.json({res: true});
+    },
+    getListCmt: async function(req, res, next){
+        const id = req.query.id;
+        const page = req.query.page;
+        if (id === undefined || page === undefined){
+            res.json({res: false, message: 'Page number is not define'});
+            return;
+        }else{
+            const cmtList = await commentDB.find({productId: id})
+                                            .sort({createOn: 1})
+                                            .skip(4 * (page - 1))
+                                            .limit(4);
+            
+            res.json(cmtList);
+        }
+    },
+
+    getUserBill: async function(req, res, next){
+        const userId = req.query.id;
+        if (userId === undefined){
+            res.json({res: false});
+        }else{
+            const userBill = await billDB.find({userId: userId});
+            const result = [];
+            for (i = 0; i < userBill.length; i++){
+                const billItem = userBill[i];
+                const cartList = [];
+                const billItemDetail = await billDetailDB.find({billId: billItem._id});
+                for (j = 0; j < billItemDetail.length; j++){
+                    const detail = billItemDetail[j];
+                    const product = await productDB.findById(detail.productId);
+                    const cartItem = {
+                        product: product,
+                        quantity: detail.quantity,
+                        totalPrice: detail.totalPrice
+                    };
+                    cartList.push(cartItem);
+                }
+
+                const billResult = {
+                    cartList: cartList,
+                    fullname: billItem.fullname,
+                    address: billItem.address
+                };
+                result.push(billResult);
+            }
+            res.json(result);
+        }
     }
 
 

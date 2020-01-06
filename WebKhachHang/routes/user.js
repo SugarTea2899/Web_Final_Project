@@ -60,18 +60,27 @@ router.post('/create-password', function(req, res, next) {
 
 /* GET checkout page*/
 router.get('/checkout', function(req, res, next) {
-    if (req.isAuthenticated())
-    {
-        res.render('pages/checkout',{
-            breadcrumbValue: "Trang chủ / Thanh toán",
-            isAuthenticated: true,
-            username: req.user.fullName,
-        } );
-    }
-    else
-    {
-        res.redirect('/user/login');
-    }    
+  userController.getCheckOutPage(req, res, next);
+});
+
+router.get('/reset-password', function(req, res, next) {
+    userController.getResetPasswordPage(req, res, next);
+});
+
+router.post('/reset-password', function(req, res, next) {
+    userController.postResetPassword(req, res, next);
+});
+
+router.get('/confirmation', function(req, res, next) {
+    userController.getConfirmPage(req, res, next);
+});
+
+router.get('/edit-info', function(req, res, next){
+    userController.getEditInfoPage(req, res, next);
+});
+
+router.post('/edit-info', function(req, res, next){
+    userController.postEditInfo(req, res, next);
 });
 
 module.exports = router;

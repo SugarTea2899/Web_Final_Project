@@ -20,22 +20,6 @@
                                 <a class="nav-link" href="/category">Cửa hàng</a>
                             </li>
                           
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="/blog" id="navbarDropdown_3"
-                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Khác
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                    <a class="dropdown-item" href="/tracking">theo dỗi sản phẩm</a>
-                                    <a class="dropdown-item" href="/user/checkout">thanh toán</a>
-                                    <a class="dropdown-item" href="/cart">giỏ hàng</a>
-                                    <a class="dropdown-item" href="/confirmation">xác nhận đơn hàng</a>
-                                    <a class="dropdown-item" href="/about">về chúng tôi</a>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/contact">Contact</a>
-                            </li>
                             <% if (!isAuthenticated) {%> 
                                 <li class="nav-item">
                                     <a class="nav-link" href="/user/login">Đăng nhập</a>
@@ -48,6 +32,21 @@
                                     <a onclick="return removeLocal();" class="nav-link" href="/user/logout">Đăng xuất</a>
                                 </li>
                             <% } %>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="/blog" id="navbarDropdown_3"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Khác
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
+                                    <a class="dropdown-item" href="/cart">giỏ hàng</a>
+                                    <% if (isAuthenticated) {%> 
+                                        <a class="dropdown-item" href="/user/confirmation">xác nhận đơn hàng</a>
+                                        <a class="dropdown-item" href="/user/reset-password">đổi mật khẩu</a>
+                                        <a class="dropdown-item" href="/user/edit-info">Chỉnh sửa thông tên</a>
+                                    <% } %>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 

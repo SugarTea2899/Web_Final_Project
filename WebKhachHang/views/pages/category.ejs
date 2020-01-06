@@ -91,34 +91,12 @@
                                 </ul>
                             </div>
                         </aside>
-
-                        <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
-                            <div class="l_w_title">
-                                <h3>Giá</h3>
-                            </div>
-                            <div class="widgets_inner">
-                                <div class="range_item">
-                                    <!-- <div id="slider-range"></div> -->
-                                    <input type="text" class="js-range-slider" value="" />
-                                    <div class="d-flex align-items-center">
-                                        <div class="price_text">
-                                            <p>Giá :</p>
-                                        </div>
-                                        <div class="price_value d-flex justify-content-center">
-                                            <input type="text" class="js-input-from" id="amount" readonly />
-                                            <span>đến</span>
-                                            <input type="text" class="js-input-to" id="amount_" readonly />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </aside>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="row">
                         <div class="col-lg-6">
-                            <input class="form-control" type="text" placeholder="search key" name="searchKey">  
+                            <input onkeyup="return search(this);" class="form-control" type="text" placeholder="Tìm kiếm..." id="searchKey">  
                         </div>
                         <div class="col-lg-8" id="filter-area">
 
@@ -160,21 +138,6 @@
     <% include ../footer.ejs %>
     <% include ../script.ejs %>
     <script>
-        const sortActive = <%= sortActive%>;
-        const pageActive = <%= pageActive%>;
-        if (sortActive == -1)
-        {
-            document.getElementById('o2').setAttribute('selected', 'selected');
-        }
-        else
-        {
-            if(sortActive == 1)
-            {
-                document.getElementById('o1').setAttribute('selected', 'selected');
-            }
-        }
-
-        
         let pageSelected = 1;
         let currentProductList;
         let typeFilter = [];
@@ -222,7 +185,9 @@
             const data = await response.json();
 
             createPageNumber(data.total);
-            document.getElementById('li' + pageSelected).classList.add('active');
+
+            if (data.total > 0)
+                document.getElementById('li' + pageSelected).classList.add('active');
 
             currentProductList = data.productList;
 
@@ -235,13 +200,33 @@
             }
         }
 
-        function clickPageNumberEvent(tag){
+        function search(tag){
+            const content = tag.value.toLowerCase();
+
+            let filedList = [];
+
+            currentProductList.forEach(item => {
+                if (item.name.toLowerCase().includes(content)){
+                    filedList.push(item);
+                }
+            });
+
+            const productListTag = document.getElementById('product-list');
+            productListTag.innerHTML = "";
+
+            for (i = 0; i < filedList.length; i++){
+                const product = filedList[i];
+                addProduct(product._id, product.image, product.name, product.price, i);
+            }
+        }
+        async function clickPageNumberEvent(tag){
             const pageClicked = tag.id.substring(1);
             document.getElementById('li' + pageSelected).classList.remove('active');
             document.getElementById('li' + pageClicked).classList.add('active');
             pageSelected = pageClicked;
-            displayProdustList();
-
+            await displayProdustList();
+            const searchTag = document.getElementById('searchKey');
+            search(searchTag);
         }
 
         function addProduct(id, image, name, price, index){

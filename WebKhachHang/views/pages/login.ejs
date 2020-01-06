@@ -59,6 +59,10 @@
 
     <script>
         const error = <%= error%>;
+        const reset = <%= reset%>;
+        if (reset == 1){
+            alert('Đổi mật khẩu thành công vui lòng đăng nhập lại.');
+        }
         if (error == 0)
             alert("Tài khoản không tồn tại.");
         if (error == 1)
