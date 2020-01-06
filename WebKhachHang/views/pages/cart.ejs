@@ -25,71 +25,6 @@
               </tr>
             </thead>
             <tbody id="cart-table">
-              <tr>
-                <td>
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="img/arrivel/arrivel_1.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <p>Minimalistic shop for multipurpose use</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h5>$360.00</h5>
-                </td>
-                <td>
-                  <div class="product_count">
-                    <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                    <input name="1" class="input-number" type="text" value="1" min="0" max="10">
-                    <span class="input-number-increment"> <i class="ti-plus"></i></span>
-                  </div>
-                </td>
-                <td>
-                  <h5>$720.00</h5>
-                </td>
-                <td>
-                  <button type="button" class="btn btn-info btn-sm">
-                    <span class="glyphicon glyphicon-remove"></span> Remove 
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="img/arrivel/arrivel_2.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <p>Minimalistic shop for multipurpose use</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h5>$360.00</h5>
-                </td>
-                <td>
-                  <div class="product_count">
-                      <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                      <input name="2" class="input-number" type="text" value="1" min="0" max="10">
-                      <span class="input-number-increment"> <i class="ti-plus"></i></span>
-                  </div>
-                </td>
-                <td>
-                  <h5>$720.00</h5>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td>
-                  <h5>Tổng</h5>
-                </td>
-                <td>
-                  <h5>$2160.00</h5>
-                </td>
-              </tr>
             </tbody>
           </table>
           <div class="checkout_btn_inner float-right">
@@ -106,6 +41,11 @@
   <% include ../script.ejs %>
 
   <script>
+
+    <% if (empty) {%>
+      alert('Giỏ hàng rỗng');
+    <% } %>
+
     const LINK_API = 'http://localhost:3000/api/';
     const cartListString = window.localStorage.getItem("cartList");
     let cartList = [];
@@ -171,6 +111,7 @@
       totalPriceBill.innerText = formatMoney(getTotalPriceBill());
       cartSize++;
       changeCartSize(cartSize);
+      window.localStorage.setItem("cartList", JSON.stringify(cartList));
     }
 
     function decreNumber(tag){
@@ -195,6 +136,7 @@
 
         const totalPriceBill = document.getElementById('total-bill');
         totalPriceBill.innerText = formatMoney(getTotalPriceBill());
+        window.localStorage.setItem("cartList", JSON.stringify(cartList));
       }
       else{
         const index = parseInt(tokens[1]);
@@ -284,7 +226,12 @@
 
     function checkOut(tag){
       if (isLogin){
-        tag.href = "/user/checkout";
+        if (cartSize == 0){
+          alert('Giỏ hàng rỗng!');
+          tag.href = "/cart "
+        }
+        else
+          tag.href = "/user/checkout";
       }else{
         alert('Vui lòng đăng nhập để thanh toán!');
         tag.href = "/user/login";

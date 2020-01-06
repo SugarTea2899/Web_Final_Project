@@ -15,7 +15,15 @@ router.post('/checkout', function(req, res, next){
     api.checkOutBill(req, res, next);
 })
 
+router.post('/send-cmt', function(req, res, next){
+    api.sendCmt(req, res, next);
+})
+
 router.get('/user-cart', function(req, res, next){
     api.getListCart(req, res, next);
+})
+
+router.get('/cmt-list', function(req, res, next){
+    api.getListCmt(req, res, next);
 })
 module.exports = router;

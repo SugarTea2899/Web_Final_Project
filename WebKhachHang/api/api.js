@@ -2,6 +2,7 @@ const productDB = require('../models/product');
 const cartDB = require('../models/cart');
 const billDB = require('../models/bill');
 const billDetailDB = require('../models/bill-detail');
+const commentDB = require('../models/comment');
 
 module.exports = {
     getListProduct: async function(req, res, next){
@@ -130,7 +131,8 @@ module.exports = {
             email: data.userInfo.email,
             address: data.userInfo.address,
             note: data.userInfo.note,
-            createOn: data.createOn
+            createOn: data.createOn,
+            totalBill: data.totalBill
         });
 
         await bill.save();
@@ -162,7 +164,36 @@ module.exports = {
             await billDetail.save();
         }
 
+        await cartDB.deleteMany({userId: data.userInfo.id});
         res.json({res: true});
+    },
+
+    sendCmt: async function(req, res, next){
+        const data = req.body;
+        const cmt = new commentDB({
+            userId: data.userId,
+            fullname: data.fullname,
+            createOn: data.createOn,
+            productId: data.productId,
+            cmt: data.cmt
+        });
+        await cmt.save();
+        res.json({res: true});
+    },
+    getListCmt: async function(req, res, next){
+        const id = req.query.id;
+        const page = req.query.page;
+        if (id === undefined || page === undefined){
+            res.json({res: false, message: 'Page number is not define'});
+            return;
+        }else{
+            const cmtList = await commentDB.find({productId: id})
+                                            .sort({createOn: 1})
+                                            .skip(4 * (page - 1))
+                                            .limit(4);
+            
+            res.json(cmtList);
+        }
     }
 
 

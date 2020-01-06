@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const passport = require('../config/passport');
 const saltRounds = 10;
 let transporter = require('../config/nodemailer');
+const cartDB = require('../models/cart');
 
 async function checkUserName(username){
     try{
@@ -172,6 +173,25 @@ module.exports= {
                 }    
             }
         }
+    },
+    getCheckOutPage: async function(req, res, next){
+        if (req.isAuthenticated())
+        {
+            const carts = await cartDB.find({userId: req.user._id});
+            if (carts == null || carts.length == 0){
+                res.redirect('/cart?empty=true');
+                return;
+            }
+            res.render('pages/checkout',{
+                breadcrumbValue: "Trang chủ / Thanh toán",
+                isAuthenticated: true,
+                username: req.user.fullName,
+            } );
+        }
+        else
+        {
+            res.redirect('/user/login');
+        } 
     },
 
     sendEmailForgorPass: async function(req, res, next){

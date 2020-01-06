@@ -9,7 +9,8 @@ const billSchema = new mongoose.Schema({
     address: String,
     email: String,
     note: String,
-    createOn: Date
+    createOn: Date,
+    totalBill: Number
 },{collection: 'bill'});
 
 module.exports = mongoose.model('bill', billSchema);
