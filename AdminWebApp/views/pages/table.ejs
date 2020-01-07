@@ -153,6 +153,10 @@
                 alert('Bạn không có quyền xóa tài khoản này');
                 return;
             }
+            if (curRole == 'superadmin' && role == 'Super Admin') {
+                alert('Bạn không có quyền xóa tài khoản này');
+                return;
+            }
             const response = await fetch("http://localhost:4000/api/ban-user?id=" + tag.id);
             const result = await response.json();
             if (result.res == false)
