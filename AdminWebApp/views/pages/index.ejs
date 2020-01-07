@@ -89,7 +89,7 @@
       async function addTopTenList() {
         displayLoading();
         var response;
-        response = await fetch("http://localhost:3000/api/top-ten");
+        response = await fetch("http://localhost:4000/api/top-ten");
         const data = await response.json();
 
         for(i = 0; i < data.length; i++)
@@ -116,7 +116,7 @@
         }
 
         var response;
-        response = await fetch("http://localhost:3000/api/sales-date?startdate="+ fromDate +"&enddate=" + toDate);
+        response = await fetch("http://localhost:4000/api/sales-date?startdate="+ fromDate +"&enddate=" + toDate);
         var result = await response.json();
         result = formatMoney(result);
         document.getElementById("totalIncome").innerHTML=result;

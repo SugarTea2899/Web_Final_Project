@@ -85,6 +85,7 @@ module.exports={
     {
       var detailId = billDetailList[i].productId;
       var index = idList.findIndex(p => p == billDetailList[i].productId);
+      if (index == -1) continue;
       rankingProduct[index].quantity = rankingProduct[index].quantity + billDetailList[i].quantity;
 
     }

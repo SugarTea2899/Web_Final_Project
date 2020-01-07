@@ -192,7 +192,7 @@
       async function getListProducts(pageNumber) {
         var response;
 
-          response = await fetch("http://localhost:3000/api/list-product?page=" + pageNumber);
+          response = await fetch("http://localhost:4000/api/list-product?page=" + pageNumber);
 
         const data = await response.json();
         const products = data.products;
@@ -235,7 +235,7 @@
 
       async function removeProduct(tag) {
         const id = tag.id;
-        const response = await fetch("http://localhost:3000/api/remove-product?id=" + tag.id);
+        const response = await fetch("http://localhost:4000/api/remove-product?id=" + tag.id);
         const result = await response.json();
         if (result.res == false) {
           alert("Xóa sản phẩm không thành công !");
