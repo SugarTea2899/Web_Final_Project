@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../elements/header.ejs %>
+
+</head>
+
+<body class="animsition">
+  <div class="page-wrapper">
+          <% include ../elements/mobile-menu.ejs %>
+          <% include ../elements/pc-menu.ejs %>
+
+          <!-- PAGE CONTAINER-->
+          <div class="page-container">
+              <% include ../elements/header-desktop.ejs %>
+
+              <!-- MAIN CONTENT-->
+              <div class="main-content">
+                  <div class="section__content section__content--p30">
+                      <div class="container-fluid">
+
+                          <div class="row m-t-30">
+                              <div class="col-md-12">
+                                  <!-- DATA TABLE-->
+                                  <h2>Trạng thái các đơn hàng</h2>
+                                  <div class="table-responsive m-b-40 mt-4">
+                                      <table id="billTable" class="table table-borderless table-data3">
+                                          <thead>
+                                              <tr>
+                                                  <th>Ngày tạo đơn</th>
+                                                  <th>Họ tên</th>
+                                                  <th>SĐT</th>
+                                                  <th>Email</th>
+                                                  <th>Địa chỉ</th>
+                                                  <th>Ghi chú</th>
+                                                  <th>Giá</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+
+                                          </tbody>
+                                      </table>
+                                  </div>
+
+                                  <!-- END DATA TABLE-->
+                                  <div id="loadmore" class="user-data__footer">
+                                      <button class="au-btn au-btn-load" onclick="return addList();">xem thêm</button>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="copyright">
+                                      <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+    <% include ../elements/scripts.ejs %>
+    <script>
+      let billList = [];
+      let countBill;
+      let page = 0;
+
+      addList();
+
+      async function addList()
+      {
+        page = page + 1;
+        await getListBills(page);
+
+        var tableRef = document.getElementById('billTable').getElementsByTagName('tbody')[0];
+        tableRef.innerHTML = '';
+
+        for(i = 0; i < billList.length; i++)
+        {
+          var money = formatMoney(billList[i].totalBill);
+          addRow(billList[i].createOn, billList[i].fullname, billList[i].phone, billList[i].email, billList[i].address, billList[i].note, money);
+        }
+      }
+
+
+      async function getListBills(pageNumber)
+      {
+        var response;
+          response = await fetch("http://localhost:4000/api/list-bill?page=" + pageNumber);
+
+        const data = await response.json();
+        const bills = data.bills;
+        countBill = data.total;
+
+        if (response == 'Page number is not defined')
+        {
+          return;
+        }
+
+        for (i=0; i<bills.length; i++)
+        {
+          billList.push(bills[i]);
+        }
+        if (billList.length == countBill)
+          document.getElementById("loadmore").style.visibility = "hidden";
+
+      }
+
+
+      function addRow(timeCreate, name, phone, email, address, note, price)
+      {
+        var tableRef = document.getElementById('billTable').getElementsByTagName('tbody')[0];
+        var newRow = tableRef.insertRow();
+
+        newRow.innerHTML = '<td>' + timeCreate + '</td><td>' + name + '</td><td>' + phone + '</td><td>' + email + '</td><td>' + address + '</td><td>' + note + '</td><td>' + price + '</td>';
+      }
+
+      function formatMoney(money) {
+        money = money.toString();
+        var format = "";
+        let i = money.length,
+        k = 0;
+        while (i-- > 0) {
+        format = money[i] + format;
+        k++;
+        if (k % 3 === 0 && i != 0) format = "." + format;
+        }
+        format += " VNĐ";
+        return format;
+      }
+
+    </script>
+
+</body>
+
+</html>
+<!-- end document-->

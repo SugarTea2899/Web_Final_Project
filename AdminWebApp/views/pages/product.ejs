@@ -72,7 +72,81 @@
                 </div>
             </div>
         </div>
-
+        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="largeModalLabel">Chỉnh sửa sản phẩm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Tên sản phẩm</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="edit-product-name" name="edit-product-name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Nhãn hiệu</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <!-- input type="text" id="add-product-brand" name="product-brand" placeholder="Product's brand" class="form-control" -->
+                                <select class="form-control" name="edit-product-brand" id="edit-product-brand">
+                                    <option id="Winter" value="Winter">Winter</option>
+                                    <option id="Wephobia" value="Wephobia">Wephobia</option>
+                                    <option id="Magonn" value="Magonn">Magonn</option>
+                                    <option id="Libe" value="Libe">Libe</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class="form-control-label">Loại sản phẩm</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select class="form-control" name="edit-product-type" id="edit-product-type">
+                                    <option id="áo len" value="áo len">Áo len</option>
+                                    <option id="áo hoodie" value="áo hoodie">Áo hoodie</option>
+                                    <option id="áo khoác" value="áo khoác">Áo khoác</option>
+                                    <option id="quần tây" value="quần tây">Quần tây</option>
+                                    <option id="quần jean" value="quần jean">Quần jean</option>
+                                    <option id="quần kaki" value="quần kaki">Quần kaki</option>
+                                    <option id="giày" value="giày">Giày</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="edit-product-quantity" class="form-control-label">Số lượng</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="number" id="edit-product-quantity" name="edit-product-quantity" min="0"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="edit-product-price" class="form-control-label">Giá</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="number" min="0" id="edit-product-price" name="edit-product-price"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                        <button type="button" class="btn btn-primary" onclick="return editItem();"></button>Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <% include ../elements/scripts.ejs %>
@@ -81,7 +155,7 @@
       let filteredList = [];
       let page = 0;
       let totalProduct;
-
+      let idItemClicked;
       addListProducts();
 
       function filterProducts(tag)
@@ -118,7 +192,7 @@
       async function getListProducts(pageNumber) {
         var response;
 
-          response = await fetch("http://localhost:3000/api/list-product?page=" + pageNumber);
+          response = await fetch("http://localhost:4000/api/list-product?page=" + pageNumber);
 
         const data = await response.json();
         const products = data.products;
@@ -156,12 +230,12 @@
         newCell2.innerHTML = '<td>'+ quantity + '</td>';
         newCell3.innerHTML = '<td>'+ price + '</td>';
         newCell4.innerHTML = '<td> <button onclick="return removeProduct(this);" id="'+ id +'" class="item" data-toggle="tooltip" data-placement="top" title="Xóa sản phẩm"> <i class="zmdi zmdi-delete"></i> </td>'
-        newCell5.innerHTML = '<td> <button onclick="return editProduct(this);" id="edit-'+ id +'" class="item" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa sản phẩm"> <i class="zmdi zmdi-edit"></i> </td>'
+        newCell5.innerHTML = '<td> <button onclick="return getId(this);" data-toggle="modal" data-target="#largeModal" id="edit-'+ id +'" class="item" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa sản phẩm"> <i class="zmdi zmdi-edit"></i> </td>'
       }
 
       async function removeProduct(tag) {
         const id = tag.id;
-        const response = await fetch("http://localhost:3000/api/remove-product?id=" + tag.id);
+        const response = await fetch("http://localhost:4000/api/remove-product?id=" + tag.id);
         const result = await response.json();
         if (result.res == false) {
           alert("Xóa sản phẩm không thành công !");
@@ -170,6 +244,59 @@
         alert("Xóa sản phẩm thành công !");
         
         location.reload();
+      }
+
+      function editItem() {
+        const id = idItemClicked;
+        const name = document.getElementById('edit-product-name').value;
+        const type = document.getElementById('edit-product-type').value;
+        let price = document.getElementById('edit-product-price').value;
+        price = parseInt(price);
+        const brand = document.getElementById('edit-product-brand').value;
+        let quantity = document.getElementById('edit-product-quantity').value;
+        quantity = parseInt(quantity);
+        let image = "./public/images/" + id + ".jpg";
+
+        let product = {
+          name,
+          type,
+          price,
+          brand,
+          quantity,
+        };
+
+        productString = JSON.stringify(product);
+        $.ajax('product/edit-product', {
+          method:'POST',
+          data: { myProduct: productString, myid: id, myimage: image },
+          success: function() {
+            alert('Chỉnh sửa sản phẩm thành công !');
+            location.reload();
+          }
+        });
+        return true;
+      }
+
+      function loadInfoProduct() {
+          const id = idItemClicked;
+          $.ajax('/product/edit-product', {
+              method:'GET',
+              data: { myid: id },
+              success: function(product) {
+                  const name = document.getElementById('edit-product-name'); name.value = product.name;
+                  const brand = document.getElementById(product.brand); brand.setAttribute('selected', 'selected');
+                  const type = document.getElementById(product.type); type.setAttribute('selected', 'selected');
+                  const quantity = document.getElementById('edit-product-quantity'); quantity.value = product.quantity;
+                  const price = document.getElementById('edit-product-price'); price.value = product.price;
+              }
+          })
+      }
+
+      function getId(tag) {
+        let id = tag.id;
+        id = id.split("-")[1];
+        idItemClicked = id;
+        loadInfoProduct();
       }
     </script>
 

@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
     password: String,
     isBanned: Boolean,
     role: String,
+    phone: String,
+    address: String,
     isActive: Boolean
 }, { collection: 'users' });
 

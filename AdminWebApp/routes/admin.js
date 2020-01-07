@@ -49,4 +49,16 @@ router.get('/table', function(req, res, next) {
     AdminController.getListUsers(req, res);
 });
 
+router.get('/bill', function(req, res, next) {
+    AdminController.getListBills(req, res);
+});
+
+router.get('/change-info', function(req, res, next) {
+  AdminController.changeInfo(req, res, next);
+});
+
+router.post('/change-info', function(req,res,next) {
+  AdminController.postChangeInfo(req, res, next);
+
+});
 module.exports = router;
