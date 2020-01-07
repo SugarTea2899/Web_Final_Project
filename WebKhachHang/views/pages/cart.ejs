@@ -24,72 +24,12 @@
                 <th scope="col">Tổng</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="img/arrivel/arrivel_1.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <p>Minimalistic shop for multipurpose use</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h5>$360.00</h5>
-                </td>
-                <td>
-                  <div class="product_count">
-                    <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                    <input name="1" class="input-number" type="text" value="1" min="0" max="10">
-                    <span class="input-number-increment"> <i class="ti-plus"></i></span>
-                  </div>
-                </td>
-                <td>
-                  <h5>$720.00</h5>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="img/arrivel/arrivel_2.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <p>Minimalistic shop for multipurpose use</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <h5>$360.00</h5>
-                </td>
-                <td>
-                  <div class="product_count">
-                      <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                      <input name="2" class="input-number" type="text" value="1" min="0" max="10">
-                      <span class="input-number-increment"> <i class="ti-plus"></i></span>
-                  </div>
-                </td>
-                <td>
-                  <h5>$720.00</h5>
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td>
-                  <h5>Tổng</h5>
-                </td>
-                <td>
-                  <h5>$2160.00</h5>
-                </td>
-              </tr>
+            <tbody id="cart-table">
             </tbody>
           </table>
           <div class="checkout_btn_inner float-right">
             <a class="btn_1" href="/category">Trở lại cửa hàng</a>
-            <a class="btn_1 checkout_btn_1" href="/checkout">Thanh toán</a>
+            <a onclick="return checkOut(this);" class="btn_1 checkout_btn_1" href="/checkout">Thanh toán</a>
           </div>
         </div>
       </div>
@@ -99,6 +39,206 @@
   <% include ../footer.ejs %>
   
   <% include ../script.ejs %>
+
+  <script>
+
+    <% if (empty) {%>
+      alert('Giỏ hàng rỗng');
+    <% } %>
+
+    const LINK_API = 'http://localhost:3000/api/';
+    const cartListString = window.localStorage.getItem("cartList");
+    let cartList = [];
+    let cartSize = 0;
+    const isLogin = <%= isAuthenticated%>;
+
+    if (cartListString != ""){
+      cartList = JSON.parse(cartListString);
+      cartSize = parseInt(window.localStorage.getItem("cartSize"));
+    }
+
+    displayCartList();
+
+    function displayCartList(){
+      const body = document.getElementById('cart-table');
+      body.innerHTML = "";
+      for (i = 0; i < cartList.length; i++){
+        const cartItem = cartList[i];
+        addRow(cartItem.product.image, cartItem.product.name, cartItem.product.price, cartItem.quantity, cartItem.totalPrice, i);
+      }
+      let totalPriceBill = 0;
+
+      cartList.forEach((item) => {
+        totalPriceBill += item.totalPrice;
+      })
+      if (cartList.length > 0)
+        addTotalRow(totalPriceBill);
+    }
+
+    function formatMoney(money) {
+      money = money.toString();
+      var format = "";
+      let i = money.length,
+      k = 0;
+      while (i-- > 0) {
+      format = money[i] + format;
+      k++;
+      if (k % 3 === 0 && i != 0) format = "." + format;
+      }
+      format += "VNĐ";
+      return format;
+    }
+
+    function increNumber(tag){
+      const id = tag.id;
+      const tokens = id.split('-');
+      const idInputNumber = 'i-' + tokens[1];
+      const inputNumber = document.getElementById(idInputNumber);
+      let value = parseInt(inputNumber.value);
+      value++;
+      inputNumber.value = value;
+
+      const index = parseInt(tokens[1]);
+      cartList[index].quantity++;
+      cartList[index].totalPrice = cartList[index].quantity * cartList[index].product.price;
+      if (isLogin)
+        addItemToUserCart(window.localStorage.getItem('userId'), cartList[index].product._id, cartList[index].quantity, cartList[index].totalPrice);
+
+      const totalPriceTag = document.getElementById('tp-' + tokens[1]);
+      totalPriceTag.innerText = formatMoney(cartList[index].totalPrice);
+
+      const totalPriceBill = document.getElementById('total-bill');
+      totalPriceBill.innerText = formatMoney(getTotalPriceBill());
+      cartSize++;
+      changeCartSize(cartSize);
+      window.localStorage.setItem("cartList", JSON.stringify(cartList));
+    }
+
+    function decreNumber(tag){
+      const id = tag.id;
+      const tokens = id.split('-');
+      const idInputNumber = 'i-' + tokens[1];
+      const inputNumber = document.getElementById(idInputNumber);
+      let value = parseInt(inputNumber.value);
+      value--;
+      inputNumber.value = value;
+      
+      if (value > 0){
+        const index = parseInt(tokens[1]);
+        cartList[index].quantity--;
+        cartList[index].totalPrice = cartList[index].quantity * cartList[index].product.price;
+
+        if (isLogin)
+          addItemToUserCart(window.localStorage.getItem('userId'), cartList[index].product._id, cartList[index].quantity, cartList[index].totalPrice);
+
+        const totalPriceTag = document.getElementById('tp-' + tokens[1]);
+        totalPriceTag.innerText = formatMoney(cartList[index].totalPrice);
+
+        const totalPriceBill = document.getElementById('total-bill');
+        totalPriceBill.innerText = formatMoney(getTotalPriceBill());
+        window.localStorage.setItem("cartList", JSON.stringify(cartList));
+      }
+      else{
+        const index = parseInt(tokens[1]);
+        if (isLogin)
+          addItemToUserCart(window.localStorage.getItem('userId'), cartList[index].product._id, 0, cartList[index].totalPrice);
+
+        const rowDel = document.getElementById('tr-' + tokens[1]);
+        rowDel.parentNode.removeChild(rowDel);
+        cartList.splice(parseInt(tokens[1]), 1);
+
+        const totalPriceBill = document.getElementById('total-bill');
+        totalPriceBill.innerText = formatMoney(getTotalPriceBill());
+        window.localStorage.setItem("cartList", JSON.stringify(cartList));
+      }
+      cartSize--;
+      changeCartSize(cartSize);
+    }
+
+    function getTotalPriceBill(){
+      let res = 0;
+      cartList.forEach((item) => {
+        res += item.totalPrice;
+      });
+
+      return res;
+    }
+
+    function removeItem(tag){
+      const id = tag.id;
+      const tokens = id.split('-');
+      const index = tokens[1];
+
+      if (isLogin)
+        addItemToUserCart(window.localStorage.getItem('userId'), cartList[index].product._id, 0, cartList[index].totalPrice);
+
+      const rowDel = document.getElementById('tr-' + tokens[1]);
+      rowDel.parentNode.removeChild(rowDel);
+      cartSize -= cartList[tokens[1]].quantity;
+      changeCartSize(cartSize);
+
+      cartList.splice(parseInt(tokens[1]), 1);
+      const totalPriceBill = document.getElementById('total-bill');
+      totalPriceBill.innerText = formatMoney(getTotalPriceBill());
+      window.localStorage.setItem("cartList", JSON.stringify(cartList));
+    }
+
+    function addRow (image, name, price, quantity, totalPrice, index){
+      const htmlElement = ' <td> <div class="media"> <div class="d-flex"> <img src="' + image + '" alt=""/> </div><div class="media-body"> <h5>' + name 
+        + '</h5></div></div></td><td> <h5>' + formatMoney(price) + 
+          '</h5> </td><td><div class="product_count"> <span class="input-number-decrement"> <i onclick="return decreNumber(this);" id="m-' + index + '" class="ti-minus"></i></span> <input id="i-' 
+            + index + '" class="input-number" type="text" value="' + quantity +
+            '" min="0" max="10"> <span class="input-number-increment"> <i onclick="return increNumber(this);" id="p-' + index + '" class="ti-plus"></i></span> </div></td><td> <h5 id="tp-' + index + '">' 
+              + formatMoney(totalPrice) + '</h5> </td> <td> <button onclick="return removeItem(this);" id="r-' + index + '" type="button" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-remove"></span> Remove </button> </td>';
+
+      const tr = document.createElement('tr');
+      tr.id = 'tr-' + index;      
+      tr.innerHTML = htmlElement;
+      const body = document.getElementById('cart-table');
+      body.appendChild(tr);
+    }
+
+    function changeCartSize(size){
+        const cartSize = document.getElementById('cart-size');
+        cartSize.innerText = size;
+        window.localStorage.setItem("cartSize", size);
+    }
+
+    function addTotalRow(totalPrice){
+      const htmlElement = '<td></td><td></td><td> <h5>Tổng</h5> </td><td> <h5 id="total-bill">' + formatMoney(totalPrice) + '</h5> </td>';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = htmlElement;
+      const body = document.getElementById('cart-table');
+      body.appendChild(tr);
+    }
+
+    async function addItemToUserCart(userId, productId, quantity, totalPrice){
+      const data = {userId: userId, productId: productId, quantity: quantity, totalPrice: totalPrice};
+      await fetch(LINK_API + 'update-cart',{
+          method: 'POST',
+          headers:{
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      });
+    }
+
+    function checkOut(tag){
+      if (isLogin){
+        if (cartSize == 0){
+          alert('Giỏ hàng rỗng!');
+          tag.href = "/cart "
+        }
+        else
+          tag.href = "/user/checkout";
+      }else{
+        alert('Vui lòng đăng nhập để thanh toán!');
+        tag.href = "/user/login";
+      }
+    }
+
+  </script>
 </body>
 
 </html>

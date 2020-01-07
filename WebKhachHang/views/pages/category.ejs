@@ -34,13 +34,13 @@
                                         </a>
                                         <ul>
                                             <li>
-                                                <a id="áo len" onclick="return getQueryString('áo len', 0)" href="category?type=áo len">Áo len</a>
+                                                <a id="0-áo len" onclick="return filterClick(this);">Áo len</a>
                                             </li>
                                             <li>
-                                                <a id="áo hoodie" onclick="return getQueryString('áo hoodie', 0)" href="category?type=áo hoodie">Áo hoodie</a>
+                                                <a id="0-áo hoodie" onclick="return filterClick(this);">Áo hoodie</a>
                                             </li>
                                             <li>
-                                                <a id="áo khoác" onclick="return getQueryString('áo khoác', 0)" href="category?type=áo khoác">Áo khoác</a>
+                                                <a id="0-áo khoác" onclick="return filterClick(this);">Áo khoác</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -51,18 +51,18 @@
                                         </a>
                                         <ul>
                                             <li>
-                                                <a id="quần tây" onclick="return getQueryString('quần tây', 0)" href="category?type=quần tây">Quần tây</a>
+                                                <a id="0-quần tây" onclick="return filterClick(this);">Quần tây</a>
                                             </li>
                                             <li>
-                                                <a id="quần jean" onclick="return getQueryString('quần jean', 0)" href="category?type=quần jean">Quần jean</a>
+                                                <a id="0-quần jean" onclick="return filterClick(this);">Quần jean</a>
                                             </li>
                                             <li>
-                                                <a id="quần kaki" onclick="return getQueryString('quần kaki', 0)" href="category?type=quần kaki">Quần kaki</a>
+                                                <a id="0-quần kaki" onclick="return filterClick(this);">Quần kaki</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a id="giày" onclick="return getQueryString('giày', 0)" href="category?type=giày">Giày các loại</a>
+                                        <a id="0-giày" onclick="return filterClick(this);">Giày các loại</a>
                                     </li>
                                 </ul>
                             </div>
@@ -77,63 +77,31 @@
                                     <h5 style="font-weight: bold">Thương hiệu</h5>
                                     
                                     <li>
-                                        <a id="Winter" onclick="return getQueryString('Winter', 1)" href="category?brand=Winter">&nbsp&nbspWinter</a>
+                                        <a id="1-Winter" onclick="return filterClick(this);" >&nbsp&nbspWinter</a>
                                     </li>
                                     <li>
-                                        <a id="Wephobia" onclick="return getQueryString('Wephobia', 1)"  href="category?brand=Wephobia">&nbsp&nbspWephobia</a>
+                                        <a id="1-Wephobia" onclick="return filterClick(this);" >&nbsp&nbspWephobia</a>
                                     </li>
                                     <li class="active">
-                                        <a id="Magonn" onclick="return getQueryString('Magonn', 1)" href="category?brand=Magonn">&nbsp&nbspMagonn</a>
+                                        <a id="1-Magonn" onclick="return filterClick(this);" >&nbsp&nbspMagonn</a>
                                     </li>
                                     <li>
-                                        <a id="Libe" onclick="return getQueryString('Libe', 1)" href="category?brand=Libe">&nbsp&nbspLibe</a>
+                                        <a id="1-Libe" onclick="return filterClick(this);" >&nbsp&nbspLibe</a>
                                     </li>
                                 </ul>
-                            </div>
-                        </aside>
-
-                        <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow">
-                            <div class="l_w_title">
-                                <h3>Giá</h3>
-                            </div>
-                            <div class="widgets_inner">
-                                <div class="range_item">
-                                    <!-- <div id="slider-range"></div> -->
-                                    <input type="text" class="js-range-slider" value="" />
-                                    <div class="d-flex align-items-center">
-                                        <div class="price_text">
-                                            <p>Giá :</p>
-                                        </div>
-                                        <div class="price_value d-flex justify-content-center">
-                                            <input type="text" class="js-input-from" id="amount" readonly />
-                                            <span>đến</span>
-                                            <input type="text" class="js-input-to" id="amount_" readonly />
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </aside>
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <div id="test" class="row">
+                    <div class="row">
                         <div class="col-lg-6">
-                            <input class="form-control" type="text" placeholder="search key" name="searchKey">
-                            <div>
-                                <a id="test" href="/">
-                                    <div class="col-lg-3 badge badge-pill badge-primary mt-2 p-2">
-                                        <span style="font-size: 15px;">Áo</span>
-                                        <span style="font-size: 10px;" class="badge badge-light float-right">x</span>
-                                    </div>
-                                 </a>
-                                 <a id="test" href="/">
-                                    <div class="col-lg-3 badge badge-pill badge-primary mt-2 p-2">
-                                        <span style="font-size: 15px;">Áo</span>
-                                        <span style="font-size: 10px;" class="badge badge-light float-right">x</span>
-                                    </div>
-                                 </a>
-                            </div>      
+                            <input onkeyup="return search(this);" class="form-control" type="text" placeholder="Tìm kiếm..." id="searchKey">  
                         </div>
+                        <div class="col-lg-8" id="filter-area">
+
+                        </div>    
+
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu product_bar_item">
@@ -141,27 +109,22 @@
                                 </div>
                                 <div class="product_top_bar_iner product_bar_item d-flex">
                                     <div class="product_bar_single">
-                                        <select id="sortType" onchange="return getQueryString('sortType',2)" class="wide">
-                                            <option id="o1" value="Giá thấp đến cao" >Giá thấp đến cao</option>
-                                            <option id="o2" value="Giá cao đến thấp" >Giá cao đến thấp</option>
+                                        <select id="sortType" onchange="return selectChange(this);" class="wide">
+                                            <option id="o1" value="1" >Giá thấp đến cao</option>
+                                            <option id="o2" value="-1" >Giá cao đến thấp</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <% products.forEach(function (product) { %>
-                                <%- include('../product-info.ejs', {product: product}) %>
-                            <% }) %>
+                        <div id="product-list" class="row">
+
                         </div>
                         
                         <div class="col-lg-12 text-center">
                             <div class="block-27">
-                                <ul>
-                                    <% for (i = 1; i <= totalPages; i++ ) { %>
-                                        <li id="<%= 'li' + i%>" ><a id="<%= 'p' + i%>" onclick="return getQueryString('<%= 'p' + i %>', 3)" href="#"><%= i%></a></li>
-                                    <% } %>
+                                <ul id="page-number">
                                 </ul>
                               </div>
                         </div>
@@ -175,22 +138,262 @@
     <% include ../footer.ejs %>
     <% include ../script.ejs %>
     <script>
-        const sortActive = <%= sortActive%>;
-        const pageActive = <%= pageActive%>;
-        if (sortActive == -1)
-        {
-            document.getElementById('o2').setAttribute('selected', 'selected');
+        let pageSelected = 1;
+        let currentProductList;
+        let typeFilter = [];
+        let brandFilter = [];
+        let cartList = [];
+        let sort = 0;
+        const LINK_API = 'http://localhost:3000/api/';
+        const isLogin = <%= isAuthenticated%>;
+
+        const cartListString = window.localStorage.getItem("cartList");
+        if (cartListString != ""){
+            cartList = JSON.parse(cartListString);
         }
-        else
-        {
-            if(sortActive == 1)
-            {
-                document.getElementById('o1').setAttribute('selected', 'selected');
+
+        displayProdustList();
+        
+
+        async function displayProdustList(){
+            let linkConn = LINK_API + 'list-product?page=' + pageSelected;
+            if (typeFilter.length > 0){
+                linkConn += '&type=';
+                for (i = 0; i < typeFilter.length; i++){
+                    linkConn += typeFilter[i];
+                    if (i != typeFilter.length - 1){
+                        linkConn += ',';
+                    }
+                }
+            }
+
+            if (brandFilter.length > 0){
+                linkConn += '&brand=';
+                for (i = 0; i < brandFilter.length; i++){
+                    linkConn += brandFilter[i];
+                    if (i != brandFilter.length - 1){
+                        linkConn += ',';
+                    }
+                }
+            }
+
+            if (sort != 0){
+                linkConn = linkConn + '&sort=' + sort;
+            }
+
+            const response = await fetch(linkConn);
+            const data = await response.json();
+
+            createPageNumber(data.total);
+
+            if (data.total > 0)
+                document.getElementById('li' + pageSelected).classList.add('active');
+
+            currentProductList = data.productList;
+
+            const productListTag = document.getElementById('product-list');
+            productListTag.innerHTML = "";
+
+            for (i = 0; i < currentProductList.length; i++){
+                const product = currentProductList[i];
+                addProduct(product._id, product.image, product.name, product.price, i);
             }
         }
 
-        const temp = 'li';
-        document.getElementById(temp + pageActive).classList.add('active');
+        function search(tag){
+            const content = tag.value.toLowerCase();
+
+            let filedList = [];
+
+            currentProductList.forEach(item => {
+                if (item.name.toLowerCase().includes(content)){
+                    filedList.push(item);
+                }
+            });
+
+            const productListTag = document.getElementById('product-list');
+            productListTag.innerHTML = "";
+
+            for (i = 0; i < filedList.length; i++){
+                const product = filedList[i];
+                addProduct(product._id, product.image, product.name, product.price, i);
+            }
+        }
+        async function clickPageNumberEvent(tag){
+            const pageClicked = tag.id.substring(1);
+            document.getElementById('li' + pageSelected).classList.remove('active');
+            document.getElementById('li' + pageClicked).classList.add('active');
+            pageSelected = pageClicked;
+            await displayProdustList();
+            const searchTag = document.getElementById('searchKey');
+            search(searchTag);
+        }
+
+        function addProduct(id, image, name, price, index){
+            const htmlElement = '<div class="single_category_product"> <div class="single_category_img"> <a href="/category/' + id + '"> <img src="' + image + '" height="259" width="500" alt=""> </a> <div class="category_social_icon"> <ul><li><a id="i-' + index + '" onclick="return addCartClick(this);"><i class="ti-bag"></i></a></li></ul> </div><div class="category_product_text"> <a href="/category/' + id + '"> <h5>' + name + '</h5></a> <p>' + formatMoney(price) + '</p></div></div></div>';
+            const div = document.createElement('div');
+            div.className = "col-lg-3 col-sm-6";
+            div.innerHTML = htmlElement;
+            const productList = document.getElementById('product-list');
+            productList.appendChild(div);
+        }
+
+        function createPageNumber(totalItem){
+            let pages = totalItem / 12;
+            if (!Number.isInteger(pages)) pages++;
+
+            const pageNumberTag = document.getElementById('page-number');
+            pageNumberTag.innerHTML = "";
+            for (i = 1; i <= pages; i++){
+                const li = document.createElement('li');
+                li.id = 'li' + i;
+                li.className = "ml-2";
+                li.innerHTML = '<a id="p' + i +'" onclick="return clickPageNumberEvent(this);">' + i + '</a>';
+                pageNumberTag.appendChild(li);
+            }
+        }
+
+        function addFilter(content, filterType){
+            let htmlElement;
+            if (filterType == 0){
+                htmlElement = '<div class="col-lg-3 ml-1 badge badge-pill badge-primary mt-2 p-2"> <span style="font-size: 15px;">' + content + '</span> <span style="font-size: 10px;" class="badge badge-light float-right">x</span> </div>'
+            }
+            else{
+                htmlElement ='<div class="col-lg-3 ml-1  badge badge-pill badge-danger mt-2 p-2"> <span style="font-size: 15px;">' + content + '</span> <span style="font-size: 10px;" class="badge badge-light float-right">x</span> </div>'
+            }
+
+            const a = document.createElement('a');
+            a.id = filterType + '-' + content + '-area';
+            a.onclick = () => { filterItemClick(a.id)};
+            a.innerHTML = htmlElement;
+            const filterArea = document.getElementById('filter-area');
+            filterArea.appendChild(a);
+
+        }
+
+        function filterItemClick(id){
+            const tag = document.getElementById(id);
+            tag.parentNode.removeChild(tag);
+            const tokens = tag.id.split('-');
+
+            if (tokens[0] == 0){
+                typeFilter.splice(typeFilter.indexOf(tokens[1]), 1);
+                displayProdustList();
+            }
+            else{
+                if (tokens[0] == 1){
+                    brandFilter.splice(brandFilter.indexOf(tokens[1]), 1);
+                    displayProdustList();
+                }
+            }
+
+        }
+        function filterClick(tag){
+            const id = tag.id;
+            const tokens = id.split('-');
+
+            if (checkExits(tokens[1], tokens[0]) == false){
+                if (tokens[0] == 0){
+                    typeFilter.push(tokens[1]);
+                    addFilter(tokens[1], tokens[0]);
+                    pageSelected = 1;
+                    displayProdustList();
+                }else{
+                    if (tokens[0] == 1){
+                        brandFilter.push(tokens[1]);
+                        addFilter(tokens[1], tokens[0]);
+                        pageSelected = 1;
+                        displayProdustList();
+                    }
+                }
+            }
+        }
+
+        function checkExits(content, filterType){
+            if (filterType == 0){
+                for (i = 0; i < typeFilter.length; i++){
+                    if (typeFilter[i] == content)
+                        return true;
+                }
+            }
+            else{
+                for (i = 0; i < brandFilter.length; i++){
+                    if (brandFilter[i] == content)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        function formatMoney(money) {
+            money = money.toString();
+            var format = "";
+            let i = money.length,
+            k = 0;
+            while (i-- > 0) {
+            format = money[i] + format;
+            k++;
+            if (k % 3 === 0 && i != 0) format = "." + format;
+            }
+            format += "VNĐ";
+            return format;
+        }
+
+        function selectChange(tag){
+            sort = tag.value;
+            displayProdustList();
+        }
+
+        function addCartClick(tag){
+            const id = tag.id;
+            const tokens = id.split('-');
+            let index = findIndex(currentProductList[parseInt(tokens[1])]);
+
+            if (index != -1){
+                cartList[index].quantity++;
+                cartList[index].totalPrice = cartList[index].quantity * cartList[index].product.price;
+            }
+            else{
+                index = cartList.length;
+                const cartItem = {product: currentProductList[tokens[1]], quantity: 1, 
+                    totalPrice: currentProductList[tokens[1]].price};
+                cartList.push(cartItem);
+            }
+            if (isLogin){
+                const cartAdd = cartList[index];
+                addItemToUserCart(window.localStorage.getItem('userId'), cartAdd.product._id, cartAdd.quantity, cartAdd.totalPrice);
+            }
+            const tagSizeCart = document.getElementById('cart-size');
+            let size = parseInt(tagSizeCart.innerText);
+            size++;
+            tagSizeCart.innerText = size;
+            window.localStorage.setItem("cartSize", size.toString());
+            window.localStorage.setItem("cartList", JSON.stringify(cartList));
+        }
+
+        async function addItemToUserCart(userId, productId, quantity, totalPrice){
+            const data = {userId: userId, productId: productId, quantity: quantity, totalPrice: totalPrice};
+            await fetch(LINK_API + 'update-cart',{
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+
+        function findIndex(product){
+            let res = -1;
+            for (i = 0; i < cartList.length; i++){
+                if (product._id == cartList[i].product._id)
+                {
+                    res = i;
+                    return res;
+                }
+            }
+            return res;
+        }
 
     </script>
 

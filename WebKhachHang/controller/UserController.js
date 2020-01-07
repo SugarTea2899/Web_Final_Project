@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const passport = require('../config/passport');
 const saltRounds = 10;
 let transporter = require('../config/nodemailer');
+const cartDB = require('../models/cart');
 
 async function checkUserName(username){
     try{
@@ -33,6 +34,9 @@ async function checkUserEmail(email){
 module.exports= {
     loginGet: function(req, res, next){
         let error = req.query.error;
+        let reset = req.query.reset;
+        if (reset === undefined)
+            reset = 0;
         if (error === undefined)
             error = -1;
 
@@ -42,7 +46,8 @@ module.exports= {
                 isAuthenticated: true,
                 username: req.user.fullName,
                 breadcrumbValue: "Trang chủ / Đăng nhập",
-                error: error
+                error: error,
+                reset: reset
             } );
         }
         else
@@ -51,7 +56,8 @@ module.exports= {
                 isAuthenticated: false,
                 username: null,
                 breadcrumbValue: "Trang chủ / Đăng nhập",
-                error: error
+                error: error,
+                reset: reset
             });
         }
     },
@@ -173,6 +179,25 @@ module.exports= {
             }
         }
     },
+    getCheckOutPage: async function(req, res, next){
+        if (req.isAuthenticated())
+        {
+            const carts = await cartDB.find({userId: req.user._id});
+            if (carts == null || carts.length == 0){
+                res.redirect('/cart?empty=true');
+                return;
+            }
+            res.render('pages/checkout',{
+                breadcrumbValue: "Trang chủ / Thanh toán",
+                isAuthenticated: true,
+                username: req.user.fullName,
+            } );
+        }
+        else
+        {
+            res.redirect('/user/login');
+        } 
+    },
 
     sendEmailForgorPass: async function(req, res, next){
         const user = await userDB.findOne({email: req.body.email});
@@ -259,5 +284,87 @@ module.exports= {
         catch(e){
             next(e);
         }
+    },
+
+    getResetPasswordPage: function(req, res, next){
+        let error = req.query.error;
+        if (error === undefined)
+            error = 0;
+        if (req.isAuthenticated()){
+            res.render('pages/reset-password',{
+                isAuthenticated: req.isAuthenticated(),
+                breadcrumbValue: "Trang chủ / Đặt lại mật khẩu",
+                username: req.user.fullname,
+                accname: req.user.username,
+                error: error
+            })
+        }else{
+            res.status(404).send({message: 'Trang không tìm thấy'});
+        }
+    },
+
+    postResetPassword: async function(req, res, next){
+        const oldPass = req.body.oldpassword;
+        const pass = req.body.password;
+        const username = req.user.username;
+
+        const user = await userDB.findOne({username: username});
+        const result = await bcrypt.compare(oldPass, user.password);
+        if (result == true){
+            const hashPass = await bcrypt.hash(pass, saltRounds);
+            user.password = hashPass;
+            await user.save();
+            req.logOut();
+            res.redirect('/user/login?reset=1');
+        }else{
+            res.redirect('/user/reset-password?error=1');
+        }
+    },
+
+    getConfirmPage: function(req, res, next){
+        if (req.isAuthenticated())
+        {
+            res.render('pages/confirmation',{
+                breadcrumbValue: "Trang chủ / Xác nhận",
+                isAuthenticated: true,
+                username: req.user.fullName,
+            } );
+        }
+        else
+        {
+            res.redirect('/');
+        } 
+    },
+
+    getEditInfoPage: function(req, res, next){
+        if (req.isAuthenticated())
+        {
+            res.render('pages/edit-name',{
+                breadcrumbValue: "Trang chủ / Xác nhận",
+                isAuthenticated: true,
+                username: req.user.fullName,
+            } );
+        }
+        else
+        {
+            res.redirect('/');
+        } 
+    },
+
+    postEditInfo: async function(req, res, next){
+        if (req.isAuthenticated())
+        {
+            const newUsername = req.body.username;
+            const user = await userDB.findById(req.user._id);
+            console.log(newUsername);
+            user.fullName = newUsername;
+            req.user.fullName = newUsername;
+            await user.save();
+            res.redirect('/');
+        }
+        else
+        {
+            res.json({message: "Not Found"});
+        } 
     }
 }

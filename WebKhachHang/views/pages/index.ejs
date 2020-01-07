@@ -225,7 +225,84 @@
     <% include ../footer.ejs %>
     <% include ../script.ejs %>
 
+    <script>
+        const LINK_API = 'http://localhost:3000/api/';
+        <% if (isAuthenticated) {%>
+            const id = "<%= id%>";
+            window.localStorage.setItem("userId", id);
+            let isLoaded = window.localStorage.getItem("isLoaded");
+            if (isLoaded != "true"){
+                appendCartList(id);
+                window.localStorage.setItem("isLoaded", "true");
+            }       
+        <% } %>
+        
+        
+        async function appendCartList(userId){
+            const response = await fetch(LINK_API + 'user-cart?userId=' + userId);
+            const data = await response.json();
+            const cartListString = window.localStorage.getItem("cartList");
+            let cartList = [];
+            if (cartListString != "" && cartListString != null){
+                cartList = JSON.parse(cartListString);
 
+                data.forEach((item) => {
+                    let index = findIndex(item.product, cartList);
+                    if (index == -1)
+                        cartList.push(item);
+                    else{
+                        cartList[index].quantity += item.quantity;
+                    }
+                });
+                window.localStorage.setItem("cartList", JSON.stringify(cartList));
+                let size = 0;
+                cartList.forEach((item) => {
+                    size += item.quantity;
+                    addItemToUserCart(userId, item.product._id, item.quantity, item.totalPrice);
+                });
+                changeCartSize(size);
+            }
+            else{
+                window.localStorage.setItem("cartList", JSON.stringify(data));
+                let size = 0;
+                data.forEach((item) => {
+                    size += item.quantity;
+                });
+                changeCartSize(size);
+            }
+
+        }
+
+        function changeCartSize(size){
+            const cartSize = document.getElementById('cart-size');
+            cartSize.innerText = size;
+            window.localStorage.setItem("cartSize", size);
+        }
+
+        function findIndex(product, cartList){
+            let res = -1;
+            for (i = 0; i < cartList.length; i++){
+                if (product._id == cartList[i].product._id)
+                {
+                    res = i;
+                    return res;
+                }
+            }
+            return res;
+        }
+
+        async function addItemToUserCart(userId, productId, quantity, totalPrice){
+            const data = {userId: userId, productId: productId, quantity: quantity, totalPrice: totalPrice};
+            await fetch(LINK_API + 'update-cart',{
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+    </script>
+    
 </body>
 
 </html>

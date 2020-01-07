@@ -6,169 +6,52 @@
 
 </head>
 
-<body class="animsition">
+<body class="animsition" onload="addTopTenList();">
     <div class="page-wrapper">
       <% include ../elements/mobile-menu.ejs %>
       <% include ../elements/pc-menu.ejs %>
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
-            
+
             <!-- HEADER DESKTOP-->
             <% include ../elements/header-desktop.ejs %>
             <!-- MAIN CONTENT-->
             <div class="main-content">
+              <div id="load" class="loading">
+                <div class="loader"></div>
+              </div>
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Thông kê danh thu</h2>
+                                    <h2 class="title-1">Thông kê doanh thu</h2>
                                 </div>
                             </div>
                         </div>
-                        <div class="row m-t-25">
-                            <div class="col-sm-6 col-lg-2">
-                                <div class="overview-item overview-item--c4">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="text mb-5 ml-2">
-                                                <span> Hôm nay</span>
-                                                <h4>$1,060,386</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Tuần</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Tháng</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Quý</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Năm</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                         <div class="row">
-                            <div class="col-lg-8">
-                                <h2 class="title-1 m-b-25">Danh sách sản phẩm</h2>
-                                <div class="table-responsive table--no-card m-b-40">
-                                    <table class="table table-borderless table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                <th>Mã sản phẩm</th>
-                                                <th>Tên</th>
-                                                <th>Trạng thái</th>
-                                                <th class="text-right">Số lượng</th>
-                                                <th class="text-right">Giá</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>01</td>
-                                                <td>Sản phẩm 01</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>02</td>
-                                                <td>Sản phẩm 02</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>03</td>
-                                                <td>Sản phẩm 03</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>04</td>
-                                                <td>Sản phẩm 04</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>05</td>
-                                                <td>Sản phẩm 05</td>
-                                                <td>Hết hàng</td>
-                                                <td class="text-right">0</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>06</td>
-                                                <td>Sản phẩm 06</td>
-                                                <td>Hết hàng</td>
-                                                <td class="text-right">0</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>07</td>
-                                                <td>Sản phẩm 07</td>
-                                                <td>Hết hàng</td>
-                                                <td class="text-right">0</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>08</td>
-                                                <td>Sản phẩm 08</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
+                          <div class="col-6">
+                                  <label  class="control-label mb-1">Từ ngày</label>
+                                  <input id="start_date" type="date" class="form-control">
+                                  <h2 class="title-1 text-danger mt-3" id="totalIncome"></h2>
+                          </div>
+                          <div class="col-6">
+                              <label class="control-label mb-1">Đến ngày</label>
+                              <input id="end_date" type="date" class="form-control">
+                              <button type="button" onclick="return calculateSales();" class="btn btn-primary mt-3 float-right">Thống kê</button>
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col">
                                 <h4 class="title-1 m-b-25">Sản phẩm bán chạy</h4>
                                 <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
                                     <div class="au-card-inner">
                                         <div class="table-responsive">
-                                            <table class="table table-top-countries">
+                                            <table id="topTenTable" class="table table-top-countries">
                                                 <thead>
                                                     <tr>
                                                         <th style="color: white;">Tên sản phẩm</th>
@@ -176,38 +59,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Sản phẩm 8</td>
-                                                        <td class="text-right">200</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sản phẩm 2</td>
-                                                        <td class="text-right">100</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sản phẩm 1</td>
-                                                        <td class="text-right">80</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sản phẩm 4</td>
-                                                        <td class="text-right">75</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sản phẩm 3</td>
-                                                        <td class="text-right">70</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sản phẩm 5</td>
-                                                        <td class="text-right">50</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sản phẩm 6</td>
-                                                        <td class="text-right">42</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sản phẩm 7</td>
-                                                        <td class="text-right">40</td>
-                                                    </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -232,6 +84,64 @@
     </div>
 
     <% include ../elements/scripts.ejs %>
+    <script>
+
+      async function addTopTenList() {
+        displayLoading();
+        var response;
+        response = await fetch("http://localhost:3000/api/top-ten");
+        const data = await response.json();
+
+        for(i = 0; i < data.length; i++)
+        {
+          addRow(data[i].name, data[i].quantity);
+        }
+        hiddenLoading();
+      }
+
+      function addRow(name, quantity) {
+        var tableRef = document.getElementById('topTenTable').getElementsByTagName('tbody')[0];
+        var newRow = tableRef.insertRow();
+        newRow.innerHTML='<td>'+name+'</td><td class="text-right">'+quantity+'</td>';
+      }
+
+      async function calculateSales()
+      {
+        var fromDate =document.getElementById("start_date").value;
+        var toDate = document.getElementById("end_date").value;
+        if ((fromDate == "") || (toDate == ""))
+        {
+            document.getElementById("totalIncome").innerHTML="";
+          return;
+        }
+
+        var response;
+        response = await fetch("http://localhost:3000/api/sales-date?startdate="+ fromDate +"&enddate=" + toDate);
+        var result = await response.json();
+        result = formatMoney(result);
+        document.getElementById("totalIncome").innerHTML=result;
+      }
+
+      function formatMoney(money) {
+        money = money.toString();
+        var format = "";
+        let i = money.length,
+        k = 0;
+        while (i-- > 0) {
+        format = money[i] + format;
+        k++;
+        if (k % 3 === 0 && i != 0) format = "." + format;
+        }
+        format += " VNĐ";
+        return format;
+      }
+      function displayLoading(){
+        const loadScreen = document.getElementById('load').style.visibility = "visible";
+      }
+      function hiddenLoading(){
+        const loadScreen = document.getElementById('load').style.visibility = "hidden";
+      }
+    </script>
 
 </body>
 

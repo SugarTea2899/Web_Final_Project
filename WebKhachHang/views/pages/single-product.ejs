@@ -37,8 +37,13 @@
         </div>
         <div class="col-lg-5 offset-lg-1">
           <div class="s_product_text">
+            <% function formatMoney(money) { money = money.toString(); var
+              format = ""; let i = money.length, k = 0; while (i-- > 0) {
+              format = money[i] + format; k++; if (k % 3 === 0 && i != 0)
+              format = "." + format; }  return format; } %>
+
             <h3><%= product.name %></h3>
-            <h2><%= product.price %></h2>
+            <h2><%= formatMoney(product.price) %> VNĐ</h2>
             <ul class="list">
               <li>
                 <a class="active" href="/category">
@@ -53,18 +58,12 @@
             </p>
             <div class="card_area">
               <div class="product_count d-inline-block">
-                <span class="inumber-decrement"> <i class="ti-minus"></i></span>
-                <input class="input-number" type="text" value="1" min="0" max="10">
-                <span class="number-increment"> <i class="ti-plus"></i></span>
+                <span class="inumber-decrement"> <i id='minus' class="ti-minus"></i></span>
+                <input id='value' class="input-number" type="text" value="1" min="0" max="10">
+                <span class="number-increment"> <i id='plus' class="ti-plus"></i></span>
               </div>
               <div class="add_to_cart">
-                <a href="#" class="btn_3">Thêm vào giỏ hàng</a>
-                <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
-              </div>
-              <div class="social_icon">
-                <a href="#" class="fb"><i class="ti-facebook"></i></a>
-                <a href="#" class="tw"><i class="ti-twitter-alt"></i></a>
-                <a href="#" class="li"><i class="ti-linkedin"></i></a>
+                <button onclick="return addCartClick();" class="btn_3">Thêm vào giỏ hàng</button>
               </div>
             </div>
           </div>
@@ -200,47 +199,9 @@
           <div class="row">
             <div class="col-lg-6">
               <div id="commentList" class="comment_list">
-                <div class="review_item">
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="img/product/single-product/review-1.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <h4>Blake Ruiz</h4>
-                      <h5>12th Feb, 2017 at 05:56 pm</h5>
-
-                    </div>
-                  </div>
-                  <p class="ml-3">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo
-                  </p>
-                </div>
-
-                <div class="review_item">
-                  <div class="media">
-                    <div class="d-flex">
-                      <img src="img/product/single-product/review-3.png" alt="" />
-                    </div>
-                    <div class="media-body">
-                      <h4>Blake Ruiz</h4>
-                      <h5>12th Feb, 2017 at 05:56 pm</h5>
-
-                    </div>
-                  </div>
-                  <p class="ml-3">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo
-                  </p>
-                </div>
-
               </div>
               <div class="col-md-12 text-center mt-5">
-                <button id="loadmore" type="submit" class="btn_3">
+                <button onclick="return loadMoreEventClick();"  id="loadmore" type="button" class="btn_3">
                   Xem thêm
                 </button>
               </div>
@@ -252,13 +213,19 @@
                   novalidate="novalidate">
 
                   <div class="col-md-12">
+                    <% if (!isAuthenticated) {%>
+                    <div class="form-group">
+                      <textarea class="form-control" name="message" id="fullname" rows="1"
+                        placeholder="Họ và tên"></textarea>
+                    </div>
+                    <% } %>
                     <div class="form-group">
                       <textarea class="form-control" name="message" id="message" rows="1"
                         placeholder="Nội dung"></textarea>
                     </div>
                   </div>
                   <div class="col-md-12 text-right">
-                    <button type="submit" value="submit" class="btn_3">
+                    <button onclick="return sendCmt();" type="button" class="btn_3">
                       Gửi ngay
                     </button>
                   </div>
@@ -267,7 +234,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -277,6 +243,89 @@
 
   <% include ../script.ejs %>
   <script>
+    const LINK_API = 'http://localhost:3000/api/';
+    const isLogin = <%= isAuthenticated%>;
+    let userName = "<%= username %>";
+    const product = {
+      _id: "<%= product._id %>",
+      price: <%= product.price%>,
+      name: "<%= product.name %>",
+      type: "<%= product.type %>",
+      image: "<%= product.image%>",
+      brand: "<%= product.brand %>",
+      quantity: <%= product.quantity%>
+    };
+
+    let page = 1;
+    const cartListString = window.localStorage.getItem("cartList");
+    let cartList = [];
+    let cartSize = 0;
+
+    if (cartListString != ""){
+      cartList = JSON.parse(cartListString);
+      cartSize = parseInt(window.localStorage.getItem("cartSize"));
+    }
+
+    loadCmtFromApi(page);
+
+
+    function addCartClick(){
+      const quantity = document.getElementById('value').value;
+      const index = findIndex(product);
+      
+      if (index == -1){
+        const totalPrice = quantity * product.price;
+        const cartItem = {
+          product: product,
+          quantity: quantity,
+          totalPrice: totalPrice
+        }
+        cartList.push(cartItem);
+        window.localStorage.setItem("cartList", JSON.stringify(cartList));
+
+        if (isLogin)
+          addItemToUserCart(window.localStorage.getItem("userId"), product._id, cartItem.quantity, cartItem.totalPrice);
+
+      }else{
+        cartList[index].quantity += quantity;
+        cartList[index].totalPrice = product.price * cartList[index].quantity;
+        window.localStorage.setItem("cartList", JSON.stringify(cartList));
+        if (isLogin)
+          addItemToUserCart(window.localStorage.getItem("userId"), product._id, cartList[index].quantity,  cartList[index].totalPrice);
+      }
+      cartSize += parseInt(quantity);
+      changeCartSize(cartSize);
+    }
+
+    function changeCartSize(size){
+        const cartSize = document.getElementById('cart-size');
+        cartSize.innerText = size;
+        window.localStorage.setItem("cartSize", size);
+    }
+
+    async function addItemToUserCart(userId, productId, quantity, totalPrice){
+      const data = {userId: userId, productId: productId, quantity: quantity, totalPrice: totalPrice};
+      await fetch(LINK_API + 'update-cart',{
+          method: 'POST',
+          headers:{
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      });
+    }
+
+
+    function findIndex(product){
+      let res = -1;
+      for (i = 0; i < cartList.length; i++){
+          if (product._id == cartList[i].product._id)
+          {
+              res = i;
+              return res;
+          }
+      }
+      return res;
+    }
     function addComment(name, day, comment)
     {
       var day_str = day.toLocaleString();
@@ -286,6 +335,79 @@
       div.innerHTML = htmlElement;
       const commentList = document.getElementById("commentList");
       commentList.appendChild(div);
+    }
+
+    function sendCmt(){
+      if (!isLogin){
+        const name = document.getElementById('fullname').value;
+        const content = document.getElementById('message').value;
+        userName = name;
+
+        if (name != "" && content != "")
+        {
+          const now = new Date();
+          addComment(name, now, content);
+          document.getElementById('message').value = "";
+          sendCmtToApi(content);
+        }else{
+          alert('Lỗi: Nội dung/Họ tên rỗng!');
+        }
+      }
+      else{
+        const content = document.getElementById('message').value;
+        if (content == ""){
+          alert('Lỗi: Nội dung rỗng!');
+          return;
+        }else{
+          document.getElementById('message').value = "";
+          const now = new Date();
+          addComment(userName, now, content);
+          sendCmtToApi(content);
+        }
+      }
+    }
+
+    async function sendCmtToApi(content){
+      const link = window.location.href;
+      const tokens = link.split('/');
+      const productId = tokens[4];
+      const userId = window.localStorage.getItem("userId");
+      const now = new Date();
+
+      const data = {
+        userId: userId, 
+        productId: productId, 
+        cmt: content,
+        fullname: userName,
+        createOn: now
+      };
+
+      await fetch(LINK_API + 'send-cmt',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+    }
+
+    async function loadCmtFromApi(page){
+      const link = window.location.href;
+      const tokens = link.split('/');
+      const productId = tokens[4];
+
+      const response = await fetch(LINK_API + 'cmt-list?id=' + productId + '&page=' + page);
+      const data = await response.json();
+
+      data.forEach((item) => {
+        const time = new Date(item.createOn);
+        addComment(item.fullname, time, item.cmt);
+      });
+    }
+
+    function loadMoreEventClick(){
+      page++;
+      loadCmtFromApi(page);
     }
   </script>
 </body>
