@@ -193,7 +193,7 @@
           '</h5> </td><td><div class="product_count"> <span class="input-number-decrement"> <i onclick="return decreNumber(this);" id="m-' + index + '" class="ti-minus pointer"></i></span> <input id="i-' 
             + index + '" class="input-number" type="number" onkeydown="return false;" value="' + quantity +
             '" min="0"> <span class="input-number-increment"> <i onclick="return increNumber(this);" id="p-' + index + '" class="ti-plus pointer"></i></span> </div></td><td> <h5 id="tp-' + index + '">' 
-              + formatMoney(totalPrice) + '</h5> </td> <td> <button onclick="return removeItem(this);" id="r-' + index + '" type="button" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-remove"></span> Remove </button> </td>';
+              + formatMoney(totalPrice) + '</h5> </td> <td> <button onclick="return removeItem(this);" id="r-' + index + '" type="button" class="btn btn-info btn-sm"> <span class="glyphicon glyphicon-remove"></span> Xoá </button> </td>';
 
       const tr = document.createElement('tr');
       tr.id = 'tr-' + index;      

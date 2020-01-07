@@ -113,10 +113,11 @@
 
     async function checkoutBill(){
       displayLoading();
-      if (!validateForm())
+      if (validateForm() == false)
       {
         hiddenLoading();
-        alert('Lỗi: Thông tin rỗng!');
+        alert('Lỗi: Thông tin rỗng hoặc sai định dạng email!');
+        return;
       }
       else{
         const name = document.getElementById('name').value;
@@ -181,7 +182,6 @@
 
       if (validateEmail() == false)
       {
-        alert('Nhập sai định dạng email.');
         return false;
       }
 
