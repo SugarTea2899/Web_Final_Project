@@ -117,6 +117,8 @@ module.exports= {
                 password: hashPass,
                 isActive: false,
                 isBanned: false,
+                phone: "",
+                address: "",
                 role: "user"
             });
     
@@ -343,6 +345,8 @@ module.exports= {
                 breadcrumbValue: "Trang chủ / Xác nhận",
                 isAuthenticated: true,
                 username: req.user.fullName,
+                phone: req.user.phone,
+                address: req.user.address
             } );
         }
         else
@@ -355,10 +359,13 @@ module.exports= {
         if (req.isAuthenticated())
         {
             const newUsername = req.body.username;
+            const newPhone = req.body.phone;
+            const newAddress = req.body.address;
             const user = await userDB.findById(req.user._id);
-            console.log(newUsername);
             user.fullName = newUsername;
-            req.user.fullName = newUsername;
+            user.phone = newPhone;
+            user.address = newAddress;
+            req.user = user;
             await user.save();
             res.redirect('/');
         }

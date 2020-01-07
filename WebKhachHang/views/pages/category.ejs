@@ -28,41 +28,41 @@
                             <div class="widgets_inner">
                                 <ul class="list">
                                     <li class="sub-menu">
-                                        <a class=" d-flex justify-content-between">
+                                        <a class=" d-flex justify-content-between pointer">
                                             Áo
                                             <div class="right ti-plus"></div>
                                         </a>
                                         <ul>
                                             <li>
-                                                <a id="0-áo len" onclick="return filterClick(this);">Áo len</a>
+                                                <a class="pointer" id="0-áo len" onclick="return filterClick(this);">Áo len</a>
                                             </li>
                                             <li>
-                                                <a id="0-áo hoodie" onclick="return filterClick(this);">Áo hoodie</a>
+                                                <a class="pointer" id="0-áo hoodie" onclick="return filterClick(this);">Áo hoodie</a>
                                             </li>
                                             <li>
-                                                <a id="0-áo khoác" onclick="return filterClick(this);">Áo khoác</a>
+                                                <a class="pointer" id="0-áo khoác" onclick="return filterClick(this);">Áo khoác</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li class="sub-menu">
-                                        <a class=" d-flex justify-content-between">
+                                        <a class=" d-flex justify-content-between pointer">
                                             Quần
                                             <div class="right ti-plus"></div>
                                         </a>
                                         <ul>
-                                            <li>
-                                                <a id="0-quần tây" onclick="return filterClick(this);">Quần tây</a>
+                                            <li >
+                                                <a class="pointer" id="0-quần tây" onclick="return filterClick(this);">Quần tây</a>
                                             </li>
                                             <li>
-                                                <a id="0-quần jean" onclick="return filterClick(this);">Quần jean</a>
+                                                <a class="pointer" id="0-quần jean" onclick="return filterClick(this);">Quần jean</a>
                                             </li>
                                             <li>
-                                                <a id="0-quần kaki" onclick="return filterClick(this);">Quần kaki</a>
+                                                <a class="pointer" id="0-quần kaki" onclick="return filterClick(this);">Quần kaki</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a id="0-giày" onclick="return filterClick(this);">Giày các loại</a>
+                                        <a class="pointer" id="0-giày" onclick="return filterClick(this);">Giày các loại</a>
                                     </li>
                                 </ul>
                             </div>
@@ -77,16 +77,16 @@
                                     <h5 style="font-weight: bold">Thương hiệu</h5>
                                     
                                     <li>
-                                        <a id="1-Winter" onclick="return filterClick(this);" >&nbsp&nbspWinter</a>
+                                        <a class="pointer" id="1-Winter" onclick="return filterClick(this);" >&nbsp&nbspWinter</a>
                                     </li>
                                     <li>
-                                        <a id="1-Wephobia" onclick="return filterClick(this);" >&nbsp&nbspWephobia</a>
+                                        <a class="pointer" id="1-Wephobia" onclick="return filterClick(this);" >&nbsp&nbspWephobia</a>
                                     </li>
                                     <li class="active">
-                                        <a id="1-Magonn" onclick="return filterClick(this);" >&nbsp&nbspMagonn</a>
+                                        <a class="pointer" id="1-Magonn" onclick="return filterClick(this);" >&nbsp&nbspMagonn</a>
                                     </li>
                                     <li>
-                                        <a id="1-Libe" onclick="return filterClick(this);" >&nbsp&nbspLibe</a>
+                                        <a class="pointer" id="1-Libe" onclick="return filterClick(this);" >&nbsp&nbspLibe</a>
                                     </li>
                                 </ul>
                             </div>
@@ -105,7 +105,7 @@
                         <div class="col-lg-12">
                             <div class="product_top_bar d-flex justify-content-between align-items-center">
                                 <div class="single_product_menu product_bar_item">
-                                    <a href="/category"> <h2>Tất cả</h2></a>
+                                    <a class="pointer" href="/category"> <h2>Tất cả</h2></a>
                                 </div>
                                 <div class="product_top_bar_iner product_bar_item d-flex">
                                     <div class="product_bar_single">
@@ -134,7 +134,7 @@
         </div>
     </section>
     <!--================End Category Product Area =================-->
-
+    
     <% include ../footer.ejs %>
     <% include ../script.ejs %>
     <script>
@@ -230,7 +230,7 @@
         }
 
         function addProduct(id, image, name, price, index){
-            const htmlElement = '<div class="single_category_product"> <div class="single_category_img"> <a href="/category/' + id + '"> <img src="' + image + '" height="259" width="500" alt=""> </a> <div class="category_social_icon"> <ul><li><a id="i-' + index + '" onclick="return addCartClick(this);"><i class="ti-bag"></i></a></li></ul> </div><div class="category_product_text"> <a href="/category/' + id + '"> <h5>' + name + '</h5></a> <p>' + formatMoney(price) + '</p></div></div></div>';
+            const htmlElement = '<div class="single_category_product"> <div class="single_category_img"> <a href="/category/' + id + '"> <img src="' + image + '" height="259" width="500" alt=""> </a> <div class="category_social_icon"> <ul><li><a class="pointer" id="i-' + index + '" onclick="return addCartClick(this);"><i class="ti-bag"></i></a></li></ul> </div><div class="category_product_text"> <a href="/category/' + id + '"> <h5>' + name + '</h5></a> <p>' + formatMoney(price) + '</p></div></div></div>';
             const div = document.createElement('div');
             div.className = "col-lg-3 col-sm-6";
             div.innerHTML = htmlElement;
@@ -248,7 +248,7 @@
                 const li = document.createElement('li');
                 li.id = 'li' + i;
                 li.className = "ml-2";
-                li.innerHTML = '<a id="p' + i +'" onclick="return clickPageNumberEvent(this);">' + i + '</a>';
+                li.innerHTML = '<a class="pointer" id="p' + i +'" onclick="return clickPageNumberEvent(this);">' + i + '</a>';
                 pageNumberTag.appendChild(li);
             }
         }
@@ -256,10 +256,10 @@
         function addFilter(content, filterType){
             let htmlElement;
             if (filterType == 0){
-                htmlElement = '<div class="col-lg-3 ml-1 badge badge-pill badge-primary mt-2 p-2"> <span style="font-size: 15px;">' + content + '</span> <span style="font-size: 10px;" class="badge badge-light float-right">x</span> </div>'
+                htmlElement = '<div class="col-lg-3 ml-1 badge badge-pill badge-primary mt-2 p-2 pointer"> <span style="font-size: 15px;">' + content + '</span> <span style="font-size: 10px;" class="badge badge-light float-right">x</span> </div>'
             }
             else{
-                htmlElement ='<div class="col-lg-3 ml-1  badge badge-pill badge-danger mt-2 p-2"> <span style="font-size: 15px;">' + content + '</span> <span style="font-size: 10px;" class="badge badge-light float-right">x</span> </div>'
+                htmlElement ='<div class="col-lg-3 ml-1  badge badge-pill badge-danger mt-2 p-2 pointer"> <span style="font-size: 15px;">' + content + '</span> <span style="font-size: 10px;" class="badge badge-light float-right">x</span> </div>'
             }
 
             const a = document.createElement('a');
@@ -346,6 +346,13 @@
         }
 
         function addCartClick(tag){
+            const tagSizeCart = document.getElementById('cart-size');
+            let size = parseInt(tagSizeCart.innerText);
+            if (size + 1 >= 40){
+                alert('Lỗi: Giỏ hàng đầy.');
+                return;
+            }
+
             const id = tag.id;
             const tokens = id.split('-');
             let index = findIndex(currentProductList[parseInt(tokens[1])]);
@@ -364,8 +371,7 @@
                 const cartAdd = cartList[index];
                 addItemToUserCart(window.localStorage.getItem('userId'), cartAdd.product._id, cartAdd.quantity, cartAdd.totalPrice);
             }
-            const tagSizeCart = document.getElementById('cart-size');
-            let size = parseInt(tagSizeCart.innerText);
+
             size++;
             tagSizeCart.innerText = size;
             window.localStorage.setItem("cartSize", size.toString());

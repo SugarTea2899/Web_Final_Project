@@ -9,7 +9,9 @@ const userSchema = new mongoose.Schema({
     password: String,
     isBanned: Boolean,
     role: String,
-    isActive: Boolean
+    isActive: Boolean,
+    phone: String,
+    address: String
 }, { collection: 'users' });
 
 userSchema.virtual('id').get(function (){

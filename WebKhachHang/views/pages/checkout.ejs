@@ -59,7 +59,7 @@
               </ul>
 
 
-              <a onclick="return checkoutBill();" class="btn_3" >Thanh toán</a>
+              <a onclick="return checkoutBill();" class="btn_3 pointer" >Thanh toán</a>
             </div>
           </div>
         </div>
@@ -182,6 +182,7 @@
       if (validateEmail() == false)
       {
         alert('Nhập sai định dạng email.');
+        return false;
       }
 
       if (name != "" && email != "" && phone != "" && address != "")

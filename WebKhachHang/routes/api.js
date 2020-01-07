@@ -30,4 +30,8 @@ router.get('/cmt-list', function(req, res, next){
 router.get('/user-bill', function(req, res, next){
     api.getUserBill(req, res, next);
 })
+
+router.get('/suggest-product', function(req, res, next){
+    api.getSuggestProduct(req, res, next);
+})
 module.exports = router;

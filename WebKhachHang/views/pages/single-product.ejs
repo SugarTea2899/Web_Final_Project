@@ -1,4 +1,4 @@
-<% breadcrumbValue = 'Trang chủ / Cửa hàng / ' + product.no%>
+<% breadcrumbValue = 'Trang chủ / Cửa hàng / ' + product.name%>
 
 <!doctype html>
 <html lang="zxx">
@@ -58,9 +58,9 @@
             </p>
             <div class="card_area">
               <div class="product_count d-inline-block">
-                <span class="inumber-decrement"> <i id='minus' class="ti-minus"></i></span>
-                <input id='value' class="input-number" type="text" value="1" min="0" max="10">
-                <span class="number-increment"> <i id='plus' class="ti-plus"></i></span>
+                <span class="inumber-decrement pointer"> <i id='minus' class="ti-minus"></i></span>
+                <input id='value' class="input-number" type="number" onkeydown="return false;" value="1" min="0" max="10">
+                <span class="number-increment pointer"> <i id='plus' class="ti-plus"></i></span>
               </div>
               <div class="add_to_cart">
                 <button onclick="return addCartClick();" class="btn_3">Thêm vào giỏ hàng</button>
@@ -238,7 +238,20 @@
     </div>
   </section>
   <!--================End Product Description Area =================-->
+  <section class="product_list best_seller padding_bottom">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="section_tittle text-center">
+            <h2>Sản phẩm gợi ý</h2>
+          </div>
+        </div>
+      </div>
+      <div id="product-list" class="row">
 
+      </div>
+    </div>
+  </section>
   <% include ../footer.ejs %>
 
   <% include ../script.ejs %>
@@ -267,10 +280,47 @@
     }
 
     loadCmtFromApi(page);
+    loadSuggestProduct();
 
+    function addProduct(id, image, name, price, index){
+      const htmlElement = '<div class="single_category_product"> <div class="single_category_img"> <a href="/category/' + id + '"> <img src="' + image + '" height="259" width="500" alt=""> </a> <div class="category_social_icon"></div><div class="category_product_text"> <a href="/category/' + id + '"> <h5>' + name + '</h5></a> <p>' + formatMoney(price) + '</p></div></div></div>';
+      const div = document.createElement('div');
+      div.className = "col-lg-3 col-sm-6";
+      div.innerHTML = htmlElement;
+      const productList = document.getElementById('product-list');
+      productList.appendChild(div);
+    }
+
+    function formatMoney(money) {
+        money = money.toString();
+        var format = "";
+        let i = money.length,
+        k = 0;
+        while (i-- > 0) {
+        format = money[i] + format;
+        k++;
+        if (k % 3 === 0 && i != 0) format = "." + format;
+        }
+        format += "VNĐ";
+        return format;
+    }
+
+    async function loadSuggestProduct(){
+      const response = await fetch(LINK_API + 'suggest-product');
+      const data = await response.json();
+
+      for (i = 0; i < data.length; i++){
+        const product = data[i];
+        addProduct(product._id, product.image, product.name, product.price, i);
+      }
+    }
 
     function addCartClick(){
       const quantity = document.getElementById('value').value;
+      if (cartSize + parseInt(quantity) >= 40){
+        alert('Lỗi: Giỏ hàng đầy.');
+        return;
+      }
       const index = findIndex(product);
       
       if (index == -1){

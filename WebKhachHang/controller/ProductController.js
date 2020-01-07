@@ -5,7 +5,7 @@ module.exports = {
             res.render('pages/single-product',{
                 product: product,
                 isAuthenticated: true,
-                username: req.user.fullName,
+                username: req.user.fullName
             } );
         }
         else
@@ -13,7 +13,7 @@ module.exports = {
             res.render('pages/single-product', {
                 product: product,
                 isAuthenticated: false,
-                username: null,
+                username: null
             });
         } 
     }

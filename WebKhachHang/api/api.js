@@ -12,7 +12,7 @@ module.exports = {
         let type = req.query.type;
 
         if (page === undefined){
-            res.json({message: "Page number is not define,"});
+            res.json({message: "Page number is not define."});
             return;
         }
 
@@ -23,6 +23,10 @@ module.exports = {
             const products = await productDB.find().sort({price: sort})
                 .skip(12 * (page - 1))
                 .limit(12);
+
+            products.forEach(item => {
+                item.image = process.env.ADMIN_DOMAIN + item.image;
+            });
 
             const total = await productDB.find().countDocuments();
             const result = {total: total, productList: products};
@@ -37,6 +41,10 @@ module.exports = {
                                             .skip(12 * (page - 1))
                                             .limit(12);
 
+                products.forEach(item => {
+                    item.image = process.env.ADMIN_DOMAIN + item.image;
+                });
+
                 const total = await productDB.find({ brand: {$in: brandArr}}).count();
                 const result = {total: total, productList: products};
 
@@ -49,6 +57,9 @@ module.exports = {
                                               .skip(12 * (page - 1))
                                               .limit(12);
 
+                    products.forEach(item => {
+                        item.image = process.env.ADMIN_DOMAIN + item.image;
+                    });                                              
                     const total = await productDB.find({ type:{ $in: typeArr}}).count();
 
                     const result = {total: total, productList: products};
@@ -61,6 +72,9 @@ module.exports = {
                                                     .sort({price: sort})
                                                     .skip(12 * (page - 1))
                                                     .limit(12);
+                    products.forEach(item => {
+                        item.image = process.env.ADMIN_DOMAIN + item.image;
+                    });                                
                     
                     const total = await productDB.find({ brand: {$in: brandArr}, type: {$in: typeArr}}).count();
                     const result = {total: total, productList: products};
@@ -115,6 +129,7 @@ module.exports = {
         for (i = 0; i < carts.length; i++){
             const item = carts[i];
             const product = await productDB.findById(item.productId);
+            product.image = process.env.ADMIN_DOMAIN + product.image;
             const cartListItem = {product: product, quantity: item.quantity, totalPrice: item.totalPrice};
             cartList.push(cartListItem);
         }
@@ -210,6 +225,8 @@ module.exports = {
                 for (j = 0; j < billItemDetail.length; j++){
                     const detail = billItemDetail[j];
                     const product = await productDB.findById(detail.productId);
+                    if (product === null) continue;
+                    product.image = process.env.ADMIN_DOMAIN + product.image;
                     const cartItem = {
                         product: product,
                         quantity: detail.quantity,
@@ -227,7 +244,20 @@ module.exports = {
             }
             res.json(result);
         }
-    }
+    },
 
+    getSuggestProduct: async function(req, res, next){
+        const count = await productDB.find().countDocuments();
+
+        const productList = [];
+
+        for (i = 0; i < 4; i++){
+            const randomNumber = Math.floor(Math.random() * count);
+            const product = await productDB.findOne().skip(randomNumber);
+            product.image = process.env.ADMIN_DOMAIN + product.image;
+            productList.push(product);
+        }
+        res.json(productList);
+    }
 
 }

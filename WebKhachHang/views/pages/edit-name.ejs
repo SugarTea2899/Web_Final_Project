@@ -25,15 +25,26 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="login_part_form">
                         <div class="login_part_form_iner">
-                            <h3>Thay đổi tên</h3>
+                            <h3>Thay đổi thông tin</h3>
                             <form class="row contact_form"  method="post" novalidate="novalidate" onsubmit="return validateForm();">
                                 <div class="col-md-12 form-group p_star">
+                                    <label class="ml-1" style="font-weight: bold;">Họ và tên</label>
                                     <input type="text" class="form-control" id="name" name="username" value="<%= username%>"
                                         placeholder="Tên người dùng...">
                                 </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <label class="ml-1" style="font-weight: bold;">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="name" name="phone" value="<%= phone%>"
+                                        placeholder="Số điện thoại...">
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <label class="ml-1" style="font-weight: bold;">Địa chỉ</label>
+                                    <input type="text" class="form-control" id="name" name="address" value="<%= address%>"
+                                        placeholder="Địa chỉ...">
+                                </div>
                                 <div class="col-md-12 form-group">
                                     <button type="submit" value="submit" class="btn_3">
-                                        Gửi
+                                        Thay đổi
                                     </button>
                                 </div>
                             </form>

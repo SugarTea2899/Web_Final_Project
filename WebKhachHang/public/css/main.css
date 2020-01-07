@@ -557,3 +557,7 @@ iframe {
   text-align: center;
   visibility: hidden;
 }
+
+.pointer{
+  cursor: pointer;
+}
