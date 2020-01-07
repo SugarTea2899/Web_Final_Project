@@ -125,5 +125,55 @@ module.exports= {
       else {
         res.redirect('/admin/login');
       }
+    },
+
+    getListBills: function(req, res) {
+      if (req.isAuthenticated()) {
+        res.render('pages/bill', {
+          loginname: req.user.username,
+          isAuthenticated: true,
+          username: req.user.fullName
+        });
+      }
+      else {
+        res.redirect('/admin/login');
+      }
+    },
+
+    changeInfo: function(req, res, next) {
+      if (req.isAuthenticated()) {
+        res.render('pages/change-info', {
+          loginname: req.user.username,
+          isAuthenticated: true,
+          username: req.user.fullName,
+          address: req.user.address,
+          phone: req.user.phone
+        });
+      }
+      else {
+        res.redirect('/admin/login');
+      }
+    },
+
+    postChangeInfo: async function(req, res, next) {
+      if (req.isAuthenticated())
+      {
+        const newAdminName = req.body.fullName;
+        const newPhone = req.body.phone;
+        const newAddress = req.body.address;
+        const user = await userDB.findById(req.user._id);
+
+        user.fullName = newAdminName;
+        user.phone = newPhone;
+        user.address = newAddress;
+        req.user = user;
+        await user.save();
+        res.redirect('/');
+
+      }
+      else {
+        res.json({message: "Not Found"});
+      }
+
     }
 }

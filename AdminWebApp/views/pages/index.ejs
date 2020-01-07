@@ -18,6 +18,9 @@
             <% include ../elements/header-desktop.ejs %>
             <!-- MAIN CONTENT-->
             <div class="main-content">
+              <div id="load" class="loading">
+                <div class="loader"></div>
+              </div>
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
@@ -41,144 +44,9 @@
                           </div>
                         </div>
 
-                        <div class="row m-t-25">
-                            <div class="col-sm-6 col-lg-2">
-                                <div class="overview-item overview-item--c4">
-                                    <div class="overview__inner">
-                                        <div class="overview-box clearfix">
-                                            <div class="text mb-5 ml-2">
-                                                <span> Hôm nay</span>
-                                                <h4>$1,060,386</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Tuần</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Tháng</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Quý</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-sm-6 col-lg-2">
-                                    <div class="overview-item overview-item--c4">
-                                        <div class="overview__inner">
-                                            <div class="overview-box clearfix">
-                                                <div class="text mb-5 ml-2">
-                                                    <span> Năm</span>
-                                                    <h4>$1,060,386</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
+
                         <div class="row">
-                            <div class="col-lg-8">
-                                <h2 class="title-1 m-b-25">Danh sách sản phẩm</h2>
-                                <div class="table-responsive table--no-card m-b-40">
-                                    <table class="table table-borderless table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                <th>Mã sản phẩm</th>
-                                                <th>Tên</th>
-                                                <th>Trạng thái</th>
-                                                <th class="text-right">Số lượng</th>
-                                                <th class="text-right">Giá</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>01</td>
-                                                <td>Sản phẩm 01</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>02</td>
-                                                <td>Sản phẩm 02</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>03</td>
-                                                <td>Sản phẩm 03</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>04</td>
-                                                <td>Sản phẩm 04</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>05</td>
-                                                <td>Sản phẩm 05</td>
-                                                <td>Hết hàng</td>
-                                                <td class="text-right">0</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>06</td>
-                                                <td>Sản phẩm 06</td>
-                                                <td>Hết hàng</td>
-                                                <td class="text-right">0</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>07</td>
-                                                <td>Sản phẩm 07</td>
-                                                <td>Hết hàng</td>
-                                                <td class="text-right">0</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>08</td>
-                                                <td>Sản phẩm 08</td>
-                                                <td>Còn hàng</td>
-                                                <td class="text-right">150</td>
-                                                <td class="text-right">150000</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
+                            <div class="col">
                                 <h4 class="title-1 m-b-25">Sản phẩm bán chạy</h4>
                                 <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
                                     <div class="au-card-inner">
@@ -219,6 +87,7 @@
     <script>
 
       async function addTopTenList() {
+        displayLoading();
         var response;
         response = await fetch("http://localhost:3000/api/top-ten");
         const data = await response.json();
@@ -227,7 +96,7 @@
         {
           addRow(data[i].name, data[i].quantity);
         }
-
+        hiddenLoading();
       }
 
       function addRow(name, quantity) {
@@ -265,6 +134,12 @@
         }
         format += " VNĐ";
         return format;
+      }
+      function displayLoading(){
+        const loadScreen = document.getElementById('load').style.visibility = "visible";
+      }
+      function hiddenLoading(){
+        const loadScreen = document.getElementById('load').style.visibility = "hidden";
       }
     </script>
 

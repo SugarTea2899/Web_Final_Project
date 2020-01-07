@@ -33,7 +33,6 @@ module.exports={
     const products = await product.find().skip(4 * (page - 1)).limit(4);
     const total = await product.find().count();
 
-    console.log(products.length);
     res.json({total: total, products: products});
   },
 
@@ -123,6 +122,19 @@ module.exports={
       totalPrice = totalPrice + bills[i].totalBill;
     }
     res.json(totalPrice);
+  },
+
+  loadBills: async function(req, res, next){
+    const page = req.query.page;
+
+    if (page === undefined) {
+      res.json("Page number is not defined");
+      return;
+    }
+
+    const bills = await bill.find().skip(5 * (page - 1)).limit(5);
+    const total = await bill.find().count();
+    res.json({total: total, bills: bills});
   }
 
 }
