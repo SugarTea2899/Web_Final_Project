@@ -2,10 +2,8 @@ var express = require('express');
 const UploadController = require('../controller/UploadController');
 const ProductController = require('../controller/ProductController');
 const Product = require('../models/product');
-const fs = require('fs');
 var router = express.Router();
 
-let idModify = 133213214;
 
 router.get('/add', function(req, res, next) {
     ProductController.addNewProduct(req, res, next);
@@ -30,7 +28,6 @@ router.post('/edit-product', async function(req, res, next) {
         item.quantity = modify.quantity;
         await item.save();
         res.send().status(200);
-        fs.unlinkSync(image);
     }
     catch (e) {
         console.log(e);

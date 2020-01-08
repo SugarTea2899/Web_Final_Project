@@ -324,10 +324,10 @@
       const index = findIndex(product);
       
       if (index == -1){
-        const totalPrice = quantity * product.price;
+        const totalPrice = parseInt(quantity) * product.price;
         const cartItem = {
           product: product,
-          quantity: quantity,
+          quantity: parseInt(quantity),
           totalPrice: totalPrice
         }
         cartList.push(cartItem);
@@ -337,7 +337,7 @@
           addItemToUserCart(window.localStorage.getItem("userId"), product._id, cartItem.quantity, cartItem.totalPrice);
 
       }else{
-        cartList[index].quantity += quantity;
+        cartList[index].quantity += parseInt(quantity);
         cartList[index].totalPrice = product.price * cartList[index].quantity;
         window.localStorage.setItem("cartList", JSON.stringify(cartList));
         if (isLogin)

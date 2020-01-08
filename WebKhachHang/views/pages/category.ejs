@@ -230,7 +230,7 @@
         }
 
         function addProduct(id, image, name, price, index){
-            const htmlElement = '<div class="single_category_product"> <div class="single_category_img"> <a href="/category/' + id + '"> <img src="' + image + '" height="259" width="500" alt=""> </a> <div class="category_social_icon"> <ul><li><a class="pointer" id="i-' + index + '" onclick="return addCartClick(this);"><i class="ti-bag"></i></a></li></ul> </div><div class="category_product_text"> <a href="/category/' + id + '"> <h5>' + name + '</h5></a> <p>' + formatMoney(price) + '</p></div></div></div>';
+            const htmlElement = '<div class="single_category_product"> <div class="single_category_img"> <a href="/category/product?id=' + id + '"> <img src="' + image + '" height="259" width="500" alt=""> </a> <div class="category_social_icon"> <ul><li><a class="pointer" id="i-' + index + '" onclick="return addCartClick(this);"><i class="ti-bag"></i></a></li></ul> </div><div class="category_product_text"> <a href="/category/' + id + '"> <h5>' + name + '</h5></a> <p>' + formatMoney(price) + '</p></div></div></div>';
             const div = document.createElement('div');
             div.className = "col-lg-3 col-sm-6";
             div.innerHTML = htmlElement;
