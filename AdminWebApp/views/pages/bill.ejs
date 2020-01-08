@@ -82,7 +82,8 @@
         for(i = 0; i < billList.length; i++)
         {
           var money = formatMoney(billList[i].totalBill);
-          addRow(billList[i].createOn, billList[i].fullname, billList[i].phone, billList[i].email, billList[i].address, billList[i].note, money);
+          const date = new Date(billList[i].createOn);
+          addRow(date.toLocaleString(), billList[i].fullname, billList[i].phone, billList[i].email, billList[i].address, billList[i].note, money);
         }
       }
 

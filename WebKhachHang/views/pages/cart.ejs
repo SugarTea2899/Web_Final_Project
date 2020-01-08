@@ -50,11 +50,15 @@
     const cartListString = window.localStorage.getItem("cartList");
     let cartList = [];
     let cartSize = 0;
+    let trackList = [];
     const isLogin = <%= isAuthenticated%>;
 
     if (cartListString != ""){
       cartList = JSON.parse(cartListString);
       cartSize = parseInt(window.localStorage.getItem("cartSize"));
+    }
+    for (i = 0; i < cartList.length; i++){
+      trackList.push(false);
     }
 
     displayCartList();
@@ -73,6 +77,14 @@
       })
       if (cartList.length > 0)
         addTotalRow(totalPriceBill);
+    }
+
+    function getRealIndex(index){
+      let res = parseInt(index);
+      for (i = 0; i < index; i++){
+        if (trackList[i] == true) res--;
+      }
+      return res;
     }
 
     function formatMoney(money) {
@@ -143,13 +155,16 @@
         window.localStorage.setItem("cartList", JSON.stringify(cartList));
       }
       else{
-        const index = parseInt(tokens[1]);
+        let index = parseInt(tokens[1]);
+        trackList[index] = true;
+        index = getRealIndex(tokens[1]);
+
         if (isLogin)
           addItemToUserCart(window.localStorage.getItem('userId'), cartList[index].product._id, 0, cartList[index].totalPrice);
 
         const rowDel = document.getElementById('tr-' + tokens[1]);
         rowDel.parentNode.removeChild(rowDel);
-        cartList.splice(parseInt(tokens[1]), 1);
+        cartList.splice(index, 1);
 
         const totalPriceBill = document.getElementById('total-bill');
         totalPriceBill.innerText = formatMoney(getTotalPriceBill());
@@ -171,17 +186,18 @@
     function removeItem(tag){
       const id = tag.id;
       const tokens = id.split('-');
-      const index = tokens[1];
+      trackList[parseInt(tokens[1])] = true;
+      const index = getRealIndex(tokens[1]);
 
       if (isLogin)
         addItemToUserCart(window.localStorage.getItem('userId'), cartList[index].product._id, 0, cartList[index].totalPrice);
 
       const rowDel = document.getElementById('tr-' + tokens[1]);
       rowDel.parentNode.removeChild(rowDel);
-      cartSize -= cartList[tokens[1]].quantity;
+      cartSize -= cartList[index].quantity;
       changeCartSize(cartSize);
 
-      cartList.splice(parseInt(tokens[1]), 1);
+      cartList.splice(index, 1);
       const totalPriceBill = document.getElementById('total-bill');
       totalPriceBill.innerText = formatMoney(getTotalPriceBill());
       window.localStorage.setItem("cartList", JSON.stringify(cartList));
